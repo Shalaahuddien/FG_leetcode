@@ -5,20 +5,20 @@
 #         self.next = next
 class Solution:
 
-    def __init__(self, head: Optional[ListNode]):
-        cur = head
-        i = 0
-        self.D = {}
-        while cur:
-            self.D[i] = cur.val
-            cur = cur.next
-            i += 1
-        print(self.D)
-        
+    def __init__(self, head: ListNode) -> None:
+        self.h = head
+
     def getRandom(self) -> int:
-        r = int(random.random()*len(self.D))
-        print(r)
-        return self.D[r]
+        cur = self.h
+        cnt = 0
+        x = -1
+
+        while cur:
+            cnt += 1
+            if random.random() < 1 / cnt:
+                x = cur.val
+            cur = cur.next
+        return x
 
 
 

@@ -1,18 +1,14 @@
 class Solution:
     def countArrangement(self, n: int) -> int:
-        sn = set(range(1, n + 1))
+        @cache
+        def dfs(bm, pl):
+            if pl == 0:
+                return 1
+            S = 0
+            for i in range(n):
+                if not bm & 1 << i and ((i + 1) % pl == 0 or \
+                     pl % (i + 1) == 0):
+                    S += dfs(bm ^ 1 << i, pl - 1)
+            return S
 
-        def bt(idx, used, path, res):
-            if idx == n + 1:
-                res.append(path[:])
-                return
-            for i in sn - used:
-                if not (i % idx == 0 or idx % i == 0):
-                    continue
-                used.add(i)
-                bt(idx + 1, used, path + [i], res)
-                used.discard(i)
-
-        res = []
-        bt(1, set(), [], res)
-        return len(res)
+        return dfs(0, n)

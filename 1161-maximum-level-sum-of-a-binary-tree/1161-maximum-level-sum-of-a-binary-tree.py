@@ -6,23 +6,15 @@
 #         self.right = right
 class Solution:
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
-        q = deque([root])
-        mx = -1e9
-        ans =lvl = 1
-        
-        while q:
-            qlen = len(q)
-            res = 0
-            for _ in range(qlen):
-                cur = q.popleft()
-                res += cur.val
-                if cur.left:
-                    q.append(cur.left)
-                if cur.right:
-                    q.append(cur.right)
-            # print(res, lvl)
-            if res > mx:
-                mx = res
-                ans = lvl
-            lvl += 1
-        return ans
+        def inorder(r, level):
+            if r:
+                inorder(r.left, level + 1)
+                level_sum[level] += r.val
+                inorder(r.right, level + 1)
+
+        level_sum = defaultdict(int)
+        inorder(root, 1)
+
+        # Choose the level with the greatest sum "level_sum[level]" and if
+        # there is a tie, then select the smaller level "-level".
+        return max(level_sum, key=lambda level: (level_sum[level], -level))

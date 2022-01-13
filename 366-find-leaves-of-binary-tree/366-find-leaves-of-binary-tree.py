@@ -8,7 +8,7 @@ class Solution:
     def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
         def height(node, heights):
             if not node:
-                return 0
+                return -1
             l = height(node.left, heights)
             r = height(node.right, heights)
             lev = max(l, r) + 1
@@ -19,6 +19,6 @@ class Solution:
         height(root, dic)
 
         res = []
-        for h in range(1, len(dic) + 1):
+        for h in range(len(dic)):
             res.append(dic[h])
         return res

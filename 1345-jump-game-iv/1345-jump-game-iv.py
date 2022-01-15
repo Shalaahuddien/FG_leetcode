@@ -8,26 +8,43 @@ class Solution:
             G[v].append(i)
 
         step = 0
-        q = deque([0])
-        vis = set()
-        while q:
-            for _ in range(len(q)):
-                cur = q.popleft()
-                if cur == n - 1:
-                    return step
+        front, end = set([0]), set([n - 1])
+        vis = set([0, n - 1])
+        while front:
+            # search from the side with fewer nodes
+            if len(front) > len(end):
+                front, end = end, front
 
+            front_next = set()
+            for cur in front:
+                '''
+                24 / 32 test cases passed: [-76,3,66,-32,64,2,-19,-8,-5,-93,80,-5,-76,-78,64,2,16]
+
+                BUG: if pop from set, not in order, so the qlen trick doesn't work! Have to use another set to save front's expand!
+                cur = front.pop()
+                '''
                 v = arr[cur]
-                # add all same v's index
+
+                # option 3
                 for i in G[v]:
+                    if i in end:
+                        return step + 1
                     if i not in vis:
                         vis.add(i)
-                        q.append(i)
+                        front_next.add(i)
 
-                del G[v]
+                # clear the list to prevent redundant search
+                # del G[v]
+                G[v].clear()
+
+                # option 1,2
                 for i in {cur - 1, cur + 1}:
+                    if i in end:
+                        return step + 1
                     if 0 <= i < n and i not in vis:
                         vis.add(i)
-                        q.append(i)
-            step += 1
+                        front_next.add(i)
 
+            front = front_next
+            step += 1
         return -1

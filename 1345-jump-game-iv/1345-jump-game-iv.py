@@ -11,10 +11,6 @@ class Solution:
         front, end = set([0]), set([n - 1])
         vis = set([0, n - 1])
         while front:
-            # search from the side with fewer nodes
-            if len(front) > len(end):
-                front, end = end, front
-
             front_next = set()
             for cur in front:
                 '''
@@ -46,5 +42,13 @@ class Solution:
                         front_next.add(i)
 
             front = front_next
+            '''
+            BUG: 127. Word Ladder's Bi-BFS not working here, since frontiers in front/end are in vis
+            if front & end:
+                return step + 1
+            '''
+
+            if len(front) > len(end):
+                front, end = end, front
             step += 1
         return -1

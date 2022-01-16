@@ -6,20 +6,14 @@
 #         self.right = right
 class Solution:
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
-        cnt = defaultdict(int)
-
         def dfs(r):
-            if r:
-                cnt[r.val] += 1
-                dfs(r.left)
-                dfs(r.right)
-
-        dfs(root)
-        for v in cnt:
-            if k - v in cnt:
-                if k == 2 * v:
-                    if cnt[v] > 1:
-                        return True
-                    continue
+            if not r:
+                return False
+            if k - r.val in seen:
                 return True
-        return False
+            seen.add(r.val)
+
+            return dfs(r.left) or dfs(r.right)
+
+        seen = set()
+        return dfs(root)

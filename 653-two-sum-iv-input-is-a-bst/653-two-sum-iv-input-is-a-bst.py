@@ -6,20 +6,25 @@
 #         self.right = right
 class Solution:
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
-        def inorder(r):
+        def inorder_itr(r):
             if r:
-                inorder(r.left)
-                ino.append(r.val)
-                inorder(r.right)
+                yield from inorder_itr(r.left)
+                yield r.val
+                yield from inorder_itr(r.right)
 
-        ino = []
-        inorder(root)
-        i, j = 0, len(ino) - 1
-        while i < j:
-            if ino[i] + ino[j] == k:
+        def rev_inorder_itr(r):
+            if r:
+                yield from rev_inorder_itr(r.right)
+                yield r.val
+                yield from rev_inorder_itr(r.left)
+
+        left_itr, right_itr = inorder_itr(root), rev_inorder_itr(root)
+        vi, vj = next(left_itr), next(right_itr)
+        while vi < vj:
+            if vi + vj == k:
                 return True
-            if ino[i] + ino[j] < k:
-                i += 1
+            elif vi + vj < k:
+                vi = next(left_itr)
             else:
-                j -= 1
+                vj = next(right_itr)
         return False

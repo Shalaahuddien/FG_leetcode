@@ -6,10 +6,15 @@
 #         self.right = right
 class Solution:
     def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return []
         pos = defaultdict(list)
+        cols = [0, 0]
 
         def dfs(r, row, col):
+            nonlocal cols
             if r:
+                cols = [min(col, cols[0]), max(col, cols[1])]
                 dfs(r.left, row + 1, col - 1)
                 pos[col].append((row, (r.val)))
                 dfs(r.right, row + 1, col + 1)
@@ -17,7 +22,8 @@ class Solution:
         dfs(root, 0, 0)
 
         res = []
-        for c in sorted(pos):
+        for c in range(cols[0], cols[1] + 1):
             res.append(
                 [v for r, v in sorted(pos[c], key=lambda tu: (tu[0]))])
+            # res.append([v for r, v in pos[c]])
         return res

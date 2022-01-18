@@ -8,12 +8,14 @@ class Solution:
     # val = 0
     def bstToGst(self, root: TreeNode) -> TreeNode:
         
-        def ino(r,acc):
+        pre = 0
+
+        def inord(r: TreeNode):
+            nonlocal pre
             if r:
-                ino(r.right,acc)
-                r.val += acc[0]
-                acc[0] = r.val
-                ino(r.left, acc)
+                inord(r.right)
+                r.val = pre = pre + r.val
+                inord(r.left)
                 return r
-        ino(root,[0])
-        return root
+
+        return inord(root)

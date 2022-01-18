@@ -1,13 +1,11 @@
 class Solution:
     def findBuildings(self, heights: List[int]) -> List[int]:
-        l = len(heights)
-        stk = []
+        L = len(heights)
         ans = []
-        for i in range(l - 1, -1, -1):
-            while stk and heights[stk[-1]] < heights[i]:
-                stk.pop()
-            if not stk:
+        mx_height = -1
+        for i in reversed(range(L)):
+            if mx_height < heights[i]:
                 ans.append(i)
-            stk.append(i)
+                mx_height = heights[i]
         ans.reverse()
         return ans

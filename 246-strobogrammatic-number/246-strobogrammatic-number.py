@@ -1,17 +1,12 @@
 class Solution:
     def isStrobogrammatic(self, num: str) -> bool:
-        d1 = '01869'
-        d2 = '01896'
-        mp = {}
-        for a,b in zip(d1,d2):
-            mp[a] = b
-        
-        l,r = 0, len(num)-1
-        while l <= r:
-            a,b = num[l],num[r]
-            if a not in mp or b not in mp:
+        mp = {0: 0, 1: 1, 6: 9, 9: 6, 8: 8}
+        i, j = 0, len(num)-1
+        while i <= j:
+            x, y = int(num[i]), int(num[j])
+            if x not in mp or y not in mp:
                 return False
-            if mp[a] != b:
+            if x != mp[y]:
                 return False
-            l,r = l+1,r-1
+            i, j = i+1, j-1
         return True

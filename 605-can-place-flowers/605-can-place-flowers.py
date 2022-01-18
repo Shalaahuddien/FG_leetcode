@@ -1,11 +1,11 @@
 class Solution:
     def canPlaceFlowers(self, F: List[int], n: int) -> bool:
         cnt = 0
-        F = [1, 0] + F + [0, 1]
-        ones = []
-        for i, c in enumerate(F):
-            if c == 1:
-                ones.append(i)
-        for p, c in zip(ones, ones[1:]):
-            cnt += max(0, (c - p - 2)) // 2
+        F = [0] + F + [0]
+        for i in range(1,len(F)-1):
+            if F[i-1] == F[i] == F[i+1] == 0:
+                F[i] = 1
+                cnt += 1
+                if cnt >= n:
+                    return True
         return cnt >= n

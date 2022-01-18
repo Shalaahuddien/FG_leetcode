@@ -9,7 +9,7 @@ class Solution:
         l,r = 0, len(num)-1
         while l <= r:
             a,b = num[l],num[r]
-            if a not in mp:
+            if a not in mp or b not in mp:
                 return False
             if mp[a] != b:
                 return False

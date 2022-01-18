@@ -1,21 +1,14 @@
 class Solution:
     def rotatedDigits(self, n: int) -> int:
-        d = {0: 0, 1: 1, 2: 5, 5: 2, 6: 9, 8: 8, 9: 6}
+        def valid(ns):
+            if not any(c in {'3', '4', '7'} for c in ns) and \
+                any(c in {'2', '5', '6', '9'} for c in ns):
+                return True
+            # 0, 1,8
+            return False
 
-        def rev(v):
-            vv = str(v)
-
-            ans = 0
-            for c in vv:
-                if int(c) not in d:
-                    return -1
-                ans = ans * 10 + d[int(c)]
-            return ans
-
-        ans = []
+        ans = 0
         for i in range(1, n + 1):
-            ri = rev(i)
-            # print(i, ri)
-            if ri not in (-1, i):
-                ans.append(i)
-        return len(ans)
+            if valid(str(i)):
+                ans += 1
+        return ans

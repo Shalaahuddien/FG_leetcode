@@ -7,14 +7,13 @@
 class Solution:
     # val = 0
     def bstToGst(self, root: TreeNode) -> TreeNode:
-        pre = 0
+        
+        def ino(r: TreeNode, sumTillNow):
+            if not r:
+                return sumTillNow
+            sr = ino(r.right, sumTillNow)
+            r.val += sr
+            return ino(r.left, r.val)
 
-        def inord(r: TreeNode):
-            nonlocal pre
-            if r:
-                inord(r.right)
-                r.val = pre = pre + r.val
-                inord(r.left)
-                return r
-
-        return inord(root)
+        ino(root, 0)
+        return root

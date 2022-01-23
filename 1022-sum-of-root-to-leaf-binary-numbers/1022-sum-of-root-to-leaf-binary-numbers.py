@@ -6,15 +6,15 @@
 #         self.right = right
 class Solution:
     def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
-        def preorder(r, cur_num):
-            nonlocal root_to_leaf
+        def pre(r, v):
             if r:
-                cur_num = (cur_num << 1) | r.val
-                if not (r.left or r.right):
-                    root_to_leaf += cur_num
-                preorder(r.left, cur_num)
-                preorder(r.right, cur_num)
-
-        root_to_leaf = 0
-        preorder(root, 0)
-        return root_to_leaf
+                nonlocal total
+                v = v<<1 | r.val
+                if not r.left and not r.right:
+                    total += v
+                pre(r.left, v)
+                pre(r.right, v)
+        
+        total = 0
+        pre(root, 0)
+        return total

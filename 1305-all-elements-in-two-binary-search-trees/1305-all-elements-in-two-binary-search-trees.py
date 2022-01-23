@@ -6,12 +6,24 @@
 #         self.right = right
 class Solution:
     def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
-        def it(r: TreeNode):
+        def ino(r: TreeNode, lst: list[int]):
             if r:
-                yield from it(r.left)
-                yield r.val
-                yield from it(r.right)
+                ino(r.left, lst)
+                lst.append(r.val)
+                ino(r.right, lst)
 
-        gen1, gen2 = it(root1), it(root2)
+        li1, li2 = [], []
+        ino(root1, li1)
+        ino(root2, li2)
 
-        return list(heapq.merge(gen1, gen2))
+        L1, L2 = len(li1), len(li2)
+        i, j = 0, 0
+        ans = []
+        while i < L1 and j < L2:
+            if li1[i] < li2[j]:
+                ans.append(li1[i])
+                i += 1
+            else:
+                ans.append(li2[j])
+                j += 1
+        return ans + li1[i:] + li2[j:]

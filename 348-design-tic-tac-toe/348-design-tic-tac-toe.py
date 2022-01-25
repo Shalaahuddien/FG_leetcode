@@ -15,21 +15,16 @@ class TicTacToe:
             p = -1
 
         self.R[row] += p
-        if self.R[row] == self.N * p:
-            return player
         self.C[col] += p
-        if self.C[col] == self.N * p:
-            return player
         if row == col:
             self.AD += p
-            if self.AD == self.N * p:
-                return player
-        if row + col == self.N-1:
+        if row + col == self.N - 1:
             self.D += p
-            if self.D == self.N * p:
-                return player
-            
-        print(self.R, self.C, self.D, self.AD)
+        if abs(self.R[row]) == self.N \
+            or abs(self.C[col]) == self.N \
+                or abs(self.D) == self.N \
+                    or abs(self.AD) == self.N:
+            return player
         return 0
 
 

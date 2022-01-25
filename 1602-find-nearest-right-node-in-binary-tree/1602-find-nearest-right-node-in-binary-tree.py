@@ -6,18 +6,16 @@
 #         self.right = right
 class Solution:
     def findNearestRightNode(self, root: TreeNode, u: TreeNode) -> Optional[TreeNode]:
+        if not root:
+            return None
         q = deque([root])
         while q:
             qlen = len(q)
             for i in range(qlen):
                 cur = q.popleft()
                 if cur == u:
-                    if i == qlen - 1:
-                        return None
-                    else:
-                        return q[0]
+                    return q.popleft() if i != qlen - 1 else None
                 if cur.left:
                     q.append(cur.left)
                 if cur.right:
                     q.append(cur.right)
-        return None

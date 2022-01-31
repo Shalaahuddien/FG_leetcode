@@ -3,14 +3,6 @@ class Solution:
         if len(s) != len(goal):
             return False
 
-        C, C2 = Counter(s), Counter(goal)
-        dif = 0
-        for c, d in zip(s, goal):
-            if c != d:
-                dif += 1
-        if dif == 2:
-            return C == C2
-        if dif == 0:
-            if any(v >= 2 for v in C.values()):
-                return True
-        return False
+        if s == goal: return len(set(s)) < len(s)
+        dif = [(a,b) for a,b in zip(s,goal) if a!=b]
+        return len(dif) == 2 and dif[0] == dif[1][::-1]

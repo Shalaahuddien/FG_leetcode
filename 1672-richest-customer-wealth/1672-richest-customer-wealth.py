@@ -1,3 +1,3 @@
 class Solution:
     def maximumWealth(self, accounts: List[List[int]]) -> int:
-        return sum(max(accounts, key=sum))
+        return max(map(sum, accounts))

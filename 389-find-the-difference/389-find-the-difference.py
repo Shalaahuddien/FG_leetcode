@@ -1,8 +1,8 @@
 class Solution:
     def findTheDifference(self, s: str, t: str) -> str:
-        cs, ct = Counter(s), Counter(t)
-        for k, v in cs.items():
-            ct[k] -= v
-        for k, v in ct.items():
-            if v == 1:
-                return k
+        x = 0
+        for c in s:
+            x ^= ord(c)
+        for c in t:
+            x ^= ord(c)
+        return chr(x)

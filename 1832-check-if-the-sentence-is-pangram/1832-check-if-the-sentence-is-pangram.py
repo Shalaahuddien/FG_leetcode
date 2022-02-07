@@ -1,7 +1,8 @@
 class Solution:
     def checkIfPangram(self, sentence: str) -> bool:
-        seen = set()
-        for w in sentence.split():
-            for c in w:
-                seen.add(c)
-        return len(seen) == 26
+        tmp, need = 0, (1 << 26) - 1
+        for c in sentence:
+            tmp |= 1 << (ord(c) - ord('a'))
+            if tmp == need:
+                return True
+        return tmp == need

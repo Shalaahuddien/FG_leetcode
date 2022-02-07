@@ -1,17 +1,26 @@
 class Solution:
     def snakesAndLadders(self, board: List[List[int]]) -> int:
         n = len(board)
-        need = {1: 0}
-        bfs = [1]
-        for x in bfs:
-            for i in range(x + 1, x + 7):
-                a, b = divmod(i - 1, n)
-                nxt = board[~a][b if a % 2 == 0 else ~b]
+        start = (1, 0)
+        vis = set([1])
+        q = deque([start])
+
+        def toRC(pos):
+            r, c = divmod(pos - 1, n)
+            return ~r, c if r % 2 == 0 else ~c
+
+        while q:
+            pos, stp = q.popleft()
+            if pos == n * n:
+                return stp
+            for pp in range(pos + 1, pos + 7):
+                if pp > n * n:
+                    continue
+                r, c = toRC(pp)
+                nxt = board[r][c]
                 if nxt > 0:
-                    i = nxt
-                if i == n * n:
-                    return need[x] + 1
-                if i not in need:
-                    need[i] = need[x] + 1
-                    bfs.append(i)
+                    pp = nxt
+                if pp not in vis:
+                    q.append((pp, stp + 1))
+                    vis.add(pp)
         return -1

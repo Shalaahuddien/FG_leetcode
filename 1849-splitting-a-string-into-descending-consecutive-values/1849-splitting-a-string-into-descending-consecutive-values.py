@@ -1,16 +1,18 @@
 class Solution:
     def splitString(self, s: str) -> bool:
-        def bt(s, path, res):
-            if not s:
-                res.append(path[:])
-                return
-            for i in range(1, len(s) + 1):
-                cut = s[:i]
-                if not cut:
+        def bt(s, i,l,prev,splits):
+            if i == len(s) and splits >= 2:
+                return True
+            
+            while i +l <= len(s):
+                cur = int(s[i:i+l])
+                l += 1
+                if prev != -1 and cur != prev-1:
                     continue
-                if not path or int(cut) + 1 == path[-1]:
-                    bt(s[i:], path + [int(cut)], res)
-
-        res = []
-        bt(s, [], res)
-        return len(res) > 1
+                if bt(s, i+l-1, 1, cur, splits+1):
+                    return True
+                
+            return False
+        
+        return bt(s, 0, 1, -1, 0)
+            

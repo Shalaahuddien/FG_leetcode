@@ -1,4 +1,12 @@
 class Solution:
     def lexicalOrder(self, n: int) -> List[int]:
-        lst = [i for i in range(1, n + 1)]
-        return sorted(lst, key=lambda x: str(x))
+        ans = []
+        v = 1
+        while len(ans) < n:
+            while v <= n:
+                ans.append(v)
+                v *= 10
+            while v % 10 == 9 or v > n:
+                v //= 10
+            v += 1
+        return ans

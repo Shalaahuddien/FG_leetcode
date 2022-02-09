@@ -1,18 +1,10 @@
 class Solution:
     def findPairs(self, nums: List[int], k: int) -> int:
-        cnt = 0
-        nums.sort()
-        for i, x in enumerate(nums):
-            if i != 0 and nums[i - 1] == x:
-                continue
-            y = k + x
-            j = bisect_right(nums, y)
-            if j == 0:
-                continue
-            if j - 1 <= i:
-                continue
-            if nums[j - 1] != y:
-                continue
-            # pairs.append((x, y))
-            cnt += 1
-        return cnt
+        C = Counter(nums)
+        res = 0
+        for x in C:
+            if k > 0 and x + k in C:
+                res += 1
+            elif k == 0 and C[x] > 1:
+                res += 1
+        return res

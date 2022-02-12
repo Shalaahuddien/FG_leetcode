@@ -15,6 +15,7 @@ class Solution:
             if front & back:
                 return l
             l += 1
+            # XXX: search from the side with fewer nodes
             if len(front) > len(back):
                 front, back = back, front
             # remove transforms from wordDict to avoid cycle

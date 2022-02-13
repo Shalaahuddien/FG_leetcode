@@ -6,26 +6,13 @@
 #         self.right = right
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        stk, visited = [], TreeNode(None)
+        def dfs(r: TreeNode) -> TreeNode:
+            """
+            Runtime: 20 ms, faster than 99.56% of Python3 online submissions for Invert Binary Tree.
 
-        def pushleftbranch(r: TreeNode):
-            while r:
-                # preorder
-                r.left, r.right = r.right, r.left
-
-                stk.append(r)
-                r = r.left
-
-        pushleftbranch(root)
-        while stk:
-            p = stk[-1]
-            # p.left subtree done, but p.right not
-            if (not p.left or p.left == visited) and p.right != visited:
-                # inorder
-                pushleftbranch(p.right)
-            # p.right subtree done
-            if not p.right or p.right == visited:
-                # postorder
-                visited = stk.pop()
-                
-        return root
+            AC in 1.
+            """
+            if r:
+                r.left, r.right = dfs(r.right), dfs(r.left)
+                return r
+        return dfs(root)

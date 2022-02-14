@@ -1,32 +1,31 @@
 class Solution:
     def removeInvalidParentheses(self, s: str) -> List[str]:
-            def count_bads(s):
-                l, r = 0, 0
-                for c in s:
-                    if c == '(':
-                        l += 1
-                    elif c == ')':
-                        r += 1
-                        if l > 0:
-                            l, r = l - 1, r - 1
-                return l, r
+        def isval(p):
+            bal = 0
+            for c in p:
+                if c == '(':
+                    bal += 1
+                elif c == ')':
+                    bal -= 1
+                    if bal < 0:
+                        return False
+            return bal == 0
 
-            L, R = count_bads(s)
-            ans = set()
+        ans = []  # !indicate whether a valid node has been met as well
+        seen = set([s])
+        q = deque([(s, 0)])
+        while q:
+            for _ in range(len(q)):
+                cur, rm = q.popleft()
+                if isval(cur):
+                    ans.append(cur)
 
-            @cache
-            def bt(s, l, r):
-                if l == r == 0:
-                    if (0, 0) == count_bads(s):
-                        ans.add(s)
-                        return
-                for i in range(len(s)):
-                    if s[i] in "()":
-                        if l > 0:
-                            bt(''.join(s[:i] + s[i + 1:]), l - 1, r)
-                        if r > 0:
-                            bt(''.join(s[:i] + s[i + 1:]), l, r - 1)
-
-            bt(s, L, R)
-            return ans
-
+                if not ans:  # ! if not valid node has been met
+                    for i in range(len(cur)):
+                        nei = ''.join(cur[:i] + cur[i + 1:])
+                        if nei not in seen:
+                            q.append((nei, rm + 1))
+                            seen.add(nei)
+            if ans:  # ! if valid node met, other valid nodes also in same level, so we can terminate after this level
+                break
+        return ans

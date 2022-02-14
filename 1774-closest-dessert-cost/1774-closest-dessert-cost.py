@@ -1,9 +1,7 @@
 class Solution:
     def closestCost(self, baseCosts: List[int], toppingCosts: List[int], target: int) -> int:
         def dfs(ti, p, cost, res):
-            if ti == len(toppingCosts):
-                return
-            nonlocal ans,diff
+            nonlocal ans, diff
             if abs(cost - target) < diff:
                 ans = cost
                 diff = abs(cost - target)
@@ -11,6 +9,8 @@ class Solution:
                 ans = min(ans, cost)
             # add all combi to res
             res.append(cost)
+            if ti == len(toppingCosts):
+                return
             if cost > target:
                 return
             for pick in range(3):
@@ -19,6 +19,5 @@ class Solution:
         res = []
         ans = diff = 1e6
         for b in baseCosts:
-            dfs(-1, -1, b, res)
-        # print(res)
+            dfs(0, 0, b, res)
         return ans

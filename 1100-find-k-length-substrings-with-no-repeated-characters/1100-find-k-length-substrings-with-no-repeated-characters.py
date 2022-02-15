@@ -1,19 +1,21 @@
 class Solution:
     def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:
-        win = defaultdict(int)
+        freq = [0] * 26
+        o = lambda c: ord(c) - ord('a')
         l, r = 0, 0
-        ans = 0
+        res = 0
         while r < len(s):
             c = s[r]
             r += 1
-            win[c] += 1
-            while r - l > k:
+            freq[o(c)] += 1
+            while freq[o(c)] > 1:
                 d = s[l]
                 l += 1
-                win[d] -= 1
-                if win[d] == 0:
-                    del win[d]
-            # now [l,r) is k size
-            if r - l == k and all(v == 1 for k, v in win.items()):
-                ans += 1
-        return ans
+                freq[o(d)] -= 1
+            # now windows all unique
+            if r - l == k:
+                res += 1
+                d = s[l]
+                l += 1
+                freq[o(d)] -= 1
+        return res

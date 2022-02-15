@@ -1,5 +1,7 @@
 class Solution:
     def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:
+        if k > len(s):
+            return 0
         freq = [0] * 26
         o = lambda c: ord(c) - ord('a')
         l, r = 0, 0

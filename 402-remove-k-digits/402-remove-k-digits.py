@@ -6,6 +6,5 @@ class Solution:
                 stk.pop()
                 k -= 1
             stk.append(n)
-            
-        finalStk = stk[:-k] if k else stk
-        return ''.join(finalStk).lstrip('0') or '0'
+        finalstk = stk[:-k] if k else stk
+        return ''.join(finalstk).lstrip('0') or '0'

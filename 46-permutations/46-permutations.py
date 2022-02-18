@@ -8,7 +8,9 @@ class Solution:
             for n in nums:
                 if n not in visited:
                     visited.add(n)
-                    bt(path+[n], visited, res)
+                    path.append(n)
+                    bt(path, visited, res)
+                    path.pop()
                     visited.remove(n)
 
         res = []

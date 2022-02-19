@@ -3,7 +3,9 @@ class Solution:
         def bt(start, path, res):
             res.append(path[:])
             for i in range(start, len(nums)):
-                bt(i + 1, path + [nums[i]], res)
+                path.append(nums[i])
+                bt(i + 1, path, res)
+                path.pop()
 
         res = []
         bt(0, [], res)

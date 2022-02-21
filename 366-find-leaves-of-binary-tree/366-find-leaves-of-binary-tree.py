@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
-        def height(node, heights):
+        def height(node: TreeNode, heights):
             if not node:
                 return -1
             l = height(node.left, heights)

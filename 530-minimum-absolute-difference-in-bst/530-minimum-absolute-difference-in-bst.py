@@ -7,18 +7,17 @@
 class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         mn = 2e9
-        io = []
+        pre = None
 
         def ino(r: TreeNode):
-            if not r:
-                return None
-            ino(r.left)
-            io.append(r.val)
-            ino(r.right)
-            
+            if r.left:
+                ino(r.left)
+            nonlocal pre, mn
+            if pre is not None:
+                mn = min(mn, r.val - pre)
+            pre = r.val
+            if r.right:
+                ino(r.right)
+
         ino(root)
-
-
-        for i in range(1, len(io)):
-            mn = min(mn, abs(io[i] - io[i - 1]))
         return mn

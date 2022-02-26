@@ -1,21 +1,22 @@
 class Solution:
     def shortestPathLength(self, graph: List[List[int]]) -> int:
-        n = len(graph)
-        if n == 1:
-            return 0
-        ALL = (1 << n) - 1
-        q = deque([(u, 1 << u) for u in range(n)])
-        seen = set(q)
-        steps = 0
-        while q:
-            for _ in range(len(q)):
-                u, bm = q.popleft()
-                for v in graph[u]:
-                    v_bm = bm | (1 << v)
-                    if v_bm == ALL:
-                        return 1 + steps
-                    if (v, v_bm) not in seen:
-                        seen.add((v, v_bm))
-                        q.append((v, v_bm))
-            steps += 1
-        return -1  # no way to reach here
+        N = len(graph)
+        ALL = (1 << N) - 1
+        cache = {}
+
+        def dp(u, bm):
+            state = (u, bm)
+            if state in cache:
+                return cache[state]
+            if bm & (bm - 1) == 0:
+                # Brian Kernighan method to check if num has only single bit set
+                return 0
+            cache[state] = float('inf')
+            for v in graph[u]:
+                if bm & (1 << v):  # cuz we are backward direction
+                    already_visited = 1 + dp(v, bm)
+                    not_visited = 1 + dp(v, bm ^ (1 << u))
+                    cache[state] = min(cache[state], already_visited, not_visited)
+            return cache[state]
+
+        return min(dp(u, ALL) for u in range(N))

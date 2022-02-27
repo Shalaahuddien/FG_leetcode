@@ -1,18 +1,18 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        def bt(path, visited, res):
-            # Don't put outer augment in param list if read-only!
-            if len(path) == len(nums):
-                res.append(list(path))
-                return
-            for n in nums:
-                if n not in visited:
-                    visited.add(n)
-                    path.append(n)
-                    bt(path, visited, res)
-                    path.pop()
-                    visited.remove(n)
+        @cache
+        def memo(nums):
+            """
+            https://leetcode.com/problems/permutations/discuss/1722569/Python3-solution-with-memoization
+            XXX: All backtrack/DFS can become @cache, just make it return res!
+            """
+            if not nums:
+                return [[]]
+            res = []
+            for i in range(len(nums)):
+                subprob = memo(tuple(nums[:i] + nums[i + 1:]))
+                for t in subprob:
+                    res.append([nums[i]] + t)
+            return res
 
-        res = []
-        bt([], set(), res)
-        return res
+        return memo(tuple(nums))

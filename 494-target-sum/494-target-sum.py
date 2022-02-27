@@ -13,11 +13,7 @@ class Solution:
                     return 1
                 return 0
 
-            result = dp(i+1, s - nums[i]) + \
-                dp(i+1, s+nums[i])
-
-            # XXX: store state and result for CURRENT PROBLEM, not subproblem!!!
-            return result
+            return dp(i + 1, s - nums[i]) + dp(i + 1, s + nums[i])
 
         # driver code
         if not nums:

@@ -8,13 +8,14 @@ class Node:
 
 class Solution:
     def cloneTree(self, root: 'Node') -> 'Node':
-        mp = {}
+        mp = {}  # clone & prevent forever loop
 
         def dfs(r: Node) -> Node:
             if not r:
                 return None
-            if r not in mp:
-                mp[r] = Node(r.val)
+            if r in mp:
+                return mp[r]
+            mp[r] = Node(r.val)
             for kid in r.children:
                 mp[r].children.append(dfs(kid))
             return mp[r]

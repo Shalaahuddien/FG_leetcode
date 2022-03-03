@@ -1,15 +1,11 @@
 class Solution:
-    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
-        @cache
-        def arith(i):
-            """
-            # of arithmetic slices in prefix nums[0...i]
-            """
-            if i < 2:
-                return 0
-            if nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2]:
-                return 1 + arith(i - 1)
+    def numberOfArithmeticSlices(self, A: List[int]) -> int:
+        cnt, tot = 0, 0
+        A.append(2e9)
+        for i in range(2, len(A)):
+            if A[i] - A[i - 1] == A[i - 1] - A[i - 2]:
+                cnt += 1
             else:
-                return 0
-
-        return sum(arith(i) for i in range(2, len(nums)))
+                tot += cnt * (cnt + 1) // 2
+                cnt = 0
+        return tot

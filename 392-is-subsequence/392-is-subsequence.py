@@ -1,9 +1,17 @@
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
-        i,j = 0,0
-        while i < len(s) and j < len(t):
+        slen, tlen = len(s), len(t)
+
+        @cache
+        def dp(i, j):
+            if i == slen:
+                return True
+            if j == tlen:
+                return False
             if s[i] == t[j]:
-                i,j = i+1,j+1
+                return dp(i + 1, j + 1)
             else:
-                j += 1
-        return i == len(s)
+                return dp(i, j + 1)
+                # return dp(i + 1, j) or dp(i, j + 1)
+
+        return dp(0, 0)

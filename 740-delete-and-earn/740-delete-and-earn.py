@@ -1,13 +1,13 @@
 class Solution:
     def deleteAndEarn(self, nums: List[int]) -> int:
+        points = Counter(nums)
+        mx = max(nums)
+        # print(points, mx)
+
         @cache
-        def rob(start):
-            if start == len(A):
+        def rob(v) -> int:
+            if v > mx:
                 return 0
-            return max(A[start] + (rob(start + 2) if (start + 2) < len(A) else 0), rob(start + 1) if (start + 1) < len(A) else 0)
+            return max(points[v] * v + rob(v + 2), rob(v + 1))
 
-        A = [0] * (max(nums) + 1)
-        for v in nums:
-            A[v] += v
-
-        return rob(0)
+        return rob(min(nums))

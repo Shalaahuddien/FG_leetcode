@@ -1,3 +1,7 @@
 class Solution:
     def mergeAlternately(self, word1: str, word2: str) -> str:
-        return "".join(x + y for x, y in zip_longest(word1, word2, fillvalue=""))
+        res = []
+        for i in range(min(len(word1), len(word2))):
+            res.append(word1[i] + word2[i])
+        res.append(word1[i + 1 :] + word2[i + 1 :])
+        return "".join(res)

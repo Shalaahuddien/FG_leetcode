@@ -1,21 +1,21 @@
 class Solution:
     def minTime(self, n: int, edges: List[List[int]], hasApple: List[bool]) -> int:
         AL = defaultdict(list)
-        for x, y in edges:
-            AL[x].append(y)
-            AL[y].append(x)
+        for u, v in edges:
+            AL[u].append(v)
+            AL[v].append(u)
 
-        def dfs(u) -> bool:
+        # @cache
+        def dfs(u):
             seen.add(u)
-            res = hasApple[u]
+            selfOfKidHasApple = hasApple[u]
             for v in AL[u]:
                 if v not in seen:
-                    res |= dfs(v)
-            if res:
-                VALID.add(u)
-            return res
-
-        VALID = set()
+                    selfOfKidHasApple |= dfs(v)
+            if not selfOfKidHasApple:
+                AL.pop(u)
+            return selfOfKidHasApple
+    
         seen = set()
         dfs(0)
-        return max(0, 2 * (len(VALID) - 1))
+        return max(0, 2 * (len(AL) - 1))

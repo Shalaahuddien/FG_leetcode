@@ -8,22 +8,10 @@
 
 class Solution:
     def printLinkedListInReverse(self, head: 'ImmutableListNode') -> None:
-        def getLinkedListSize(head):
-            size=0
-            while head:
-                size+=1
-                head=head.getNext()
-            return size
-        
-        def helper(head,n):
-            if n>1:
-                half=head
-                for _ in range(n//2):
-                    half=half.getNext()
-                helper(half,n-n//2)
-                helper(head,n//2)
-            elif n == 1:
-                head.printValue()
-
-        size=getLinkedListSize(head)
-        helper(head,size)
+        def dfs(v):
+            if not v.getNext():
+                v.printValue()
+                return
+            dfs(v.getNext())
+            v.printValue()
+        dfs(head)

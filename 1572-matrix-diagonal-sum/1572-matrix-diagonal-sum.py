@@ -2,12 +2,9 @@ class Solution:
     def diagonalSum(self, mat: List[List[int]]) -> int:
         N = len(mat)
         ans = 0
-        for r in range(N):
-            for c in range(N):
-                if r == c:
-                    ans += mat[r][c]
-                if r + c == N - 1:
-                    ans += mat[r][c]
+        for i in range(N):
+            ans += mat[i][i]
+            ans += mat[N - 1 - i][i]
         if N % 2 == 1:
             ans -= mat[N // 2][N // 2]
         return ans

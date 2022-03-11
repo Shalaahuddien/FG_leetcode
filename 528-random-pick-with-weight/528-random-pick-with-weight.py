@@ -1,16 +1,16 @@
 class Solution:
-    # from random import choice
+
     def __init__(self, w: List[int]):
-        self.pre = [0] * (len(w)+1)
-        for i in range(1, len(w)+1):
-            self.pre[i] = self.pre[i-1] + w[i-1]
+        # T: O(N), M: O(N)
+        self.P = [0] * (len(w) + 1)
+        for i in range(len(w)):
+            self.P[i + 1] = self.P[i] + w[i]
 
     def pickIndex(self) -> int:
-        r = randint(1, self.pre[-1])
-        i = bisect.bisect_left(self.pre, r)
-        return i-1
-        
-
+        # T: O(logN)
+        r = randint(1, self.P[-1])
+        i = bisect.bisect_left(self.P, r)
+        return i - 1
 
 # Your Solution object will be instantiated and called as such:
 # obj = Solution(w)

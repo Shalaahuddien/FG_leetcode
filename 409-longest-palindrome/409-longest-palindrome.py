@@ -1,15 +1,4 @@
 class Solution:
     def longestPalindrome(self, s: str) -> int:
-        C = Counter(s)
-        ans = 0
-        has_odds = 0
-        for k, v in C.items():
-            if v % 2 == 0:
-                ans += v
-            else:
-                ans += v - 1
-                has_odds += 1
-
-        if has_odds:
-            ans += 1
-        return ans
+        odds = sum([freq % 2 for _, freq in Counter(s).items()])
+        return len(s) if odds <= 1 else len(s) - odds + 1

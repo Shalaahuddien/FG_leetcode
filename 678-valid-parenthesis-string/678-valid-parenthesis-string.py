@@ -11,6 +11,4 @@ class Solution:
                     return False
             return bal <= wild
 
-        forward = validate(s, "(")
-        backward = validate(s[::-1], ")")
-        return forward and backward
+        return validate(s, "(") and validate(s[::-1], ")")

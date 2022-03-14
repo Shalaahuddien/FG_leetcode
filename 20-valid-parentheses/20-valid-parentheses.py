@@ -1,18 +1,15 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        open = '([{'
-        close = ')]}'
-        oc = {c:o for o,c in zip(open,close)}
         stk = []
+        pas = {
+            ')': '(',
+            ']': '[',
+            '}': '{'
+        }
         for c in s:
-            if c in open:
+            if c not in pas:
                 stk.append(c)
             else:
-                if not stk:
+                if not stk or pas[c] != stk.pop():
                     return False
-                op = stk.pop()
-                if oc[c] != op:
-                    return False
-                
         return not stk
-                

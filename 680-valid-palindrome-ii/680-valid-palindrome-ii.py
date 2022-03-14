@@ -1,9 +1,11 @@
 class Solution:
     def validPalindrome(self, s: str) -> bool:
-        i, j = 0, len(s) - 1
-        while i < j:
-            if s[i] != s[j]:
-                one, two = s[i:j], s[i + 1:j + 1]
+        l,r = 0, len(s)-1
+        while l < r:
+            if s[l] == s[r]:
+                l,r = l+1,r-1
+            else:
+                one = s[l:r]
+                two = s[l+1:r+1]
                 return one == one[::-1] or two == two[::-1]
-            i, j = i + 1, j - 1
         return True

@@ -1,7 +1,7 @@
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
-        f = lambda c: ord(c)-ord('A')
-        n,h,d,m = len(needle), len(haystack), ord('z')-ord('A')+1, sys.maxsize
+        f = lambda c: ord(c)-ord('a')
+        n,h,d,m = len(needle), len(haystack), ord('z')-ord('a')+1, sys.maxsize
         if n > h: return -1
         nd, hash_n, hash_h = d**(n-1),0,0
         # init hash

@@ -1,17 +1,13 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        if not height:
-            return 0
-        l,r = 0, len(height)-1
-        l_max,r_max = height[0], height[r]
-        ans = 0
-        while l <= r:
-            l_max = max(l_max, height[l])
-            r_max = max(r_max, height[r])
-            if l_max < r_max:
-                ans += l_max - height[l]
-                l += 1
-            else:
-                ans += r_max - height[r]
-                r -= 1
-        return ans
+        stk, res = [], 0
+        for i, h in enumerate(height):
+            while stk and height[stk[-1]] < h:
+                low_i = stk.pop()
+                if not stk:
+                    break
+                W = i - stk[-1] - 1
+                H = min(height[stk[-1]], h) - height[low_i]
+                res += W * H
+            stk.append(i)
+        return res

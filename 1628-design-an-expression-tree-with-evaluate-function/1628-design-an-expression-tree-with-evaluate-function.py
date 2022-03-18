@@ -13,6 +13,15 @@ class TreeNode(Node):
     def evaluate(self):
         if self.val.isdigit():
             return int(self.val)
+        ops = {
+            "+": lambda a, b: a + b,
+            "-": lambda a, b: a - b,
+            "*": lambda a, b: a * b,
+            "/": lambda a, b: a // b,
+        }
+        op = ops[self.val]
+        return op(self.left.evaluate(), self.right.evaluate())
+        """
         elif self.val == "*":
             return self.left.evaluate() * self.right.evaluate()
         elif self.val == "+":
@@ -21,12 +30,12 @@ class TreeNode(Node):
             return self.left.evaluate() - self.right.evaluate()
         else:
             return self.left.evaluate() // self.right.evaluate()
+        """
 
     def __init__(self, val):
         self.val = val
         self.left = None
         self.right = None
-
 
 """    
 This is the TreeBuilder class.

@@ -1,10 +1,5 @@
 class Solution:
     def stringMatching(self, words: List[str]) -> List[str]:
-        words.sort(key=len)
-        ans = []
-        for i, w in enumerate(words):
-            for ow in words[i + 1 :]:
-                if w in ow:
-                    ans.append(w)
-                    break
+        all_words = " ".join(words)
+        ans = [w for w in words if all_words.count(w) >= 2]
         return ans

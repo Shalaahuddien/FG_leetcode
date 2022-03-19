@@ -1,12 +1,10 @@
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        if not intervals:
-            return 0
-        
         pq = []
-        for itv in sorted(intervals, key=lambda tu: tu[0]):
-            if pq and pq[0] <= itv[0]:
-                heappushpop(pq, itv[1])
+        for s,f in sorted(intervals, key=lambda x: x[0]):
+            if pq and pq[0] <= s:
+                heappushpop(pq, f)
             else:
-                heapq.heappush(pq, itv[1])
+                heappush(pq, f)
         return len(pq)
+        

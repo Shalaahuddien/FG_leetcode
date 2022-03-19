@@ -1,29 +1,19 @@
-from threading import Condition
+from threading import Condition, Semaphore
 
 class FooBar:
-    def __init__(self, n):
+    def __init__(self, n) -> None:
         self.n = n
-        self.cv = Condition()
-        self.f = 0
-        self.fdone = lambda: self.f == 1
-        self.bdone = lambda: self.f == 0
+        self.foo_gate = Semaphore(1)
+        self.bar_gate = Semaphore(0)
 
-    def foo(self, printFoo: "Callable[[], None]") -> None:
-
+    def foo(self, printFoo):
         for i in range(self.n):
-            with self.cv:
-                self.cv.wait_for(self.bdone)
-                # printFoo() outputs "foo". Do not change or remove this line.
-                printFoo()
-                self.f = 1
-                self.cv.notify_all()
+            self.foo_gate.acquire()
+            printFoo()
+            self.bar_gate.release()
 
-    def bar(self, printBar: "Callable[[], None]") -> None:
-
+    def bar(self, printBar):
         for i in range(self.n):
-            with self.cv:
-                self.cv.wait_for(self.fdone)
-                # printBar() outputs "bar". Do not change or remove this line.
-                printBar()
-                self.f = 0
-                self.cv.notify_all()
+            self.bar_gate.acquire()
+            printBar()
+            self.foo_gate.release()

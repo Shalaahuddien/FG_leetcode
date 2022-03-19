@@ -1,14 +1,8 @@
 class Solution:
     def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
-        from sortedcontainers import SortedDict
-
-        sd = SortedDict()
-        for s, f in intervals:
-            sd[s] = sd.setdefault(s, 0) + 1
-            sd[f] = sd.setdefault(f, 0) - 1
-        room = 0
-        for _, v in sd.items():
-            room += v
-            if room > 1:
+        intervals.sort(key=lambda x: (x[0], -x[1]))
+        for prev, cur in zip(intervals, intervals[1:]):
+            # BUG: equal is allowed
+            if prev[1] > cur[0]:
                 return False
         return True

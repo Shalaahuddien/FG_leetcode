@@ -1,27 +1,22 @@
 class FreqStack:
 
     def __init__(self):
-        self.cnt_group = defaultdict(list)
-        self.mx_cnt = 0
-        self.v2cnt = defaultdict(int)
+        self.freq = Counter()
+        self.mx_freq = 0
+        self.group = defaultdict(list)
 
     def push(self, val: int) -> None:
-        self.v2cnt[val] += 1
-        f = self.v2cnt[val]
-        self.cnt_group[f].append(val)
-        self.mx_cnt = max(self.mx_cnt, f)
+        f = self.freq[val] + 1
+        self.freq[val] = f
+        self.mx_freq = max(f, self.mx_freq)
+        self.group[f].append(val)
 
     def pop(self) -> int:
-        f = self.mx_cnt
-        v = self.cnt_group[f].pop()
-        if not self.cnt_group[f]:
-            del self.cnt_group[f]
-            self.mx_cnt -= 1
-        self.v2cnt[v] -= 1
-        if self.v2cnt[v] == 0:
-            del self.v2cnt[v]
-        return v
-
+        x  = self.group[self.mx_freq].pop()
+        self.freq[x] -= 1
+        if not self.group[self.mx_freq]:
+            self.mx_freq -= 1
+        return x
 
 
 # Your FreqStack object will be instantiated and called as such:

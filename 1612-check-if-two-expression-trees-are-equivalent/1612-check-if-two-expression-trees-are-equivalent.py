@@ -16,6 +16,4 @@ class Solution:
 
         r1 = dfs(root1)
         r2 = dfs(root2)
-        r1.sort()
-        r2.sort()
-        return r1 == r2
+        return Counter(r1) == Counter(r2)

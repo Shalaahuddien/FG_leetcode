@@ -1,10 +1,13 @@
+from sortedcontainers import SortedDict
+
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        pq = []
-        for s,f in sorted(intervals, key=lambda x: x[0]):
-            if pq and pq[0] <= s:
-                heappushpop(pq, f)
-            else:
-                heappush(pq, f)
-        return len(pq)
-        
+        sd = SortedDict()
+        for s, f in intervals:
+            sd[s] = sd.setdefault(s, 0) + 1
+            sd[f] = sd.setdefault(f, 0) - 1
+        room, k = 0, 0
+        for _, v in sd.items():
+            room += v
+            k = max(k, room)
+        return k

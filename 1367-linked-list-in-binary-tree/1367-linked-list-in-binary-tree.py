@@ -11,22 +11,15 @@
 #         self.right = right
 class Solution:
     def isSubPath(self, head: Optional[ListNode], root: Optional[TreeNode]) -> bool:
-        def is_subpath(h, r):
+        @cache
+        def dp(h, r):
             if not h:
                 return True
             if not r:
                 return False
-            if is_same(h, r):
-                return True
-            return is_subpath(h, r.left) or is_subpath(h, r.right)
+            if h.val == r.val:
+                return dp(h.next, r.left) or dp(h.next, r.right) or dp(head, r.left) or dp(head, r.right)
+            else:
+                return dp(head, r.left) or dp(head, r.right)
 
-        def is_same(h, r):
-            if not h:
-                return True
-            if not r:
-                return False
-            if h.val != r.val:
-                return False
-            return is_same(h.next, r.left) or is_same(h.next, r.right)
-
-        return is_subpath(head, root)
+        return dp(head, root)

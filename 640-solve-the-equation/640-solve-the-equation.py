@@ -1,42 +1,30 @@
 class Solution:
     def solveEquation(self, equation: str) -> str:
-        def parse(s: str):
-            cnt = Counter()
-            num = coeff = ""
-            is_x = False
-            for i in range(len(s) - 1, -1, -1):
-                if s[i] in "+-":
-                    sign = 1
-                    if s[i] == "-":
-                        sign = -1
-                    if is_x:
-                        cnt["x"] += sign * (int(coeff) if coeff else 1)
-                    else:
-                        cnt["const"] += sign * int(num)
-                    coeff = num = ""
-                    is_x = False
-                elif s[i] == "x":
-                    is_x = True
+        def evaluate(expr):
+            print(expr)
+            tokens = expr.replace("+", "#+").replace("-", "#-").split("#")  # For example: "x+5-3+x" is replaced to "x#+5#-3#+x" then split by "#"
+            print(tokens)
+            res = [0] * 2
+            for token in tokens:
+                if not token:
+                    continue
+                if token == "x" or token == "+x":
+                    res[0] += 1
+                elif token == "-x":
+                    res[0] -= 1
+                elif "x" in token:
+                    res[0] += int(token[: token.index("x")])  # For example: "3x" or "-5x" or "+6x"
                 else:
-                    if is_x:
-                        coeff = s[i] + coeff
-                    else:
-                        num = s[i] + num
-            return cnt
+                    res[1] += int(token)
+            return res
 
-        lhs, rhs = equation.split("=")
-        if lhs[0] not in "+-":
-            lhs = "+" + lhs
-        if rhs[0] not in "+-":
-            rhs = "+" + rhs
-        cl, cr = parse(lhs), parse(rhs)
-        # print(cl, cr)
-
-        cl["x"] -= cr["x"]
-        cr["const"] -= cl["const"]
-        if cl["x"] == 0:
-            if cr["const"] != 0:
-                return "No solution"
+        parts = equation.split("=")
+        leftRes = evaluate(parts[0])
+        rightRes = evaluate(parts[1])
+        a = leftRes[0] - rightRes[0]
+        b = rightRes[1] - leftRes[1]
+        if a == 0 and b == 0:
             return "Infinite solutions"
-        ans = cr["const"] // cl["x"]
-        return f"x={ans}"
+        if a == 0:
+            return "No solution"
+        return f"x={b // a}"

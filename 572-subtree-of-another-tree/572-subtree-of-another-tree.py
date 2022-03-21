@@ -6,11 +6,13 @@
 #         self.right = right
 class Solution:
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        @cache
         def is_same(r, s):
             if r and s:
                 return r.val == s.val and is_same(r.left, s.left) and is_same(r.right, s.right)
             return r == s
 
+        @cache
         def dfs(r, s):
             if not r:
                 return False

@@ -1,9 +1,7 @@
 class Solution:
     def solveEquation(self, equation: str) -> str:
         def evaluate(expr):
-            print(expr)
             tokens = expr.replace("+", "#+").replace("-", "#-").split("#")  # For example: "x+5-3+x" is replaced to "x#+5#-3#+x" then split by "#"
-            print(tokens)
             res = [0] * 2
             for token in tokens:
                 if not token:

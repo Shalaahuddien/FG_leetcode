@@ -7,7 +7,7 @@
 class Solution:
     def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
         def dfs(T: TreeNode, par: TreeNode, dep, mp: dict):
-            if not T:
+            if not T or len(mp) == 2:
                 return
             if T.val in [x, y]:
                 mp[T.val] = [par, dep]

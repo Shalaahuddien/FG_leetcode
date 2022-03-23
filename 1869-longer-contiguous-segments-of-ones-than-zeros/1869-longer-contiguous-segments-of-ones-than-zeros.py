@@ -1,16 +1,14 @@
 class Solution:
     def checkZeroOnes(self, s: str) -> bool:
-        mx0, mx1 = 0, 0
-        cnt = 0
-        prev = "#"
-        for c in s + "#":
-            if prev == c:
-                cnt += 1
+        mx_one, mx_zero, cur_one, cur_zero = 0, 0, 0, 0
+        for c in s:
+            if c == "1":
+                cur_zero = 0
+                cur_one += 1
             else:
-                if prev == "0":
-                    mx0 = max(mx0, cnt)
-                elif prev == "1":
-                    mx1 = max(mx1, cnt)
-                cnt = 1
-            prev = c
-        return mx1 > mx0
+                cur_zero += 1
+                cur_one = 0
+
+            mx_one = max(mx_one, cur_one)
+            mx_zero = max(mx_zero, cur_zero)
+        return mx_one > mx_zero

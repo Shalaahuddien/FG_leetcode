@@ -1,9 +1,14 @@
 class Solution:
     def findUnsortedSubarray(self, nums: List[int]) -> int:
-        snums = sorted(nums)
-        start, end = len(nums), 0
+        stk = []
+        l, r = len(nums), 0
         for i, n in enumerate(nums):
-            if n != snums[i]:
-                start = min(i, start)
-                end = max(i, end)
-        return end - start + 1 if end - start >= 0 else 0
+            while stk and nums[stk[-1]] > n:
+                l = min(stk.pop(), l)
+            stk.append(i)
+        stk = []
+        for i in range(len(nums) - 1, -1, -1):
+            while stk and nums[stk[-1]] < nums[i]:
+                r = max(stk.pop(), r)
+            stk.append(i)
+        return r - l + 1 if r - l > 0 else 0

@@ -1,11 +1,10 @@
 class Solution:
     def flipAndInvertImage(self, image: List[List[int]]) -> List[List[int]]:
-        R,C = len(image), len(image[0])
         for row in image:
-            i,j = 0, C-1
-            while i <= j:
-                if row[i] == row[j]:
-                    flip = 1-row[i]
-                    row[i] = row[j] = flip
-                i,j =i+1,j-1
+            for i in range((len(row) + 1) // 2):
+                """
+                In Python, the shortcut row[~i] = row[-i-1] = row[len(row) - 1 - i]
+                helps us find the i-th value of the row, counting from the right.
+                """
+                row[i], row[~i] = row[~i] ^ 1, row[i] ^ 1
         return image

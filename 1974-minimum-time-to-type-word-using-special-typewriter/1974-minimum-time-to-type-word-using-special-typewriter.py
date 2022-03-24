@@ -1,17 +1,13 @@
 class Solution:
     def minTimeToType(self, word: str) -> int:
-        def o(c):
-            return ord(c) - ord("a")
-
-        a = "a"
-        cost = 0
+        def o(c,d):
+            return (ord(c) - ord(d)) % 26
+        pre = 'a'
+        ans = len(word)
         for c in word:
-            d1 = abs(o(c) - o(a))
-            d2 = 0
-            if o(c) > o(a):
-                d2 = abs(o(c) - (o("z") + 1 + o(a)))
-            else:
-                d2 = abs(o(a) - (o("z") + 1 + o(c)))
-            cost += min(d1, d2) + 1
-            a = c
-        return cost
+            val = o(c,pre)
+            ans += min(val, 26-val)
+            pre = c
+        return ans
+
+        

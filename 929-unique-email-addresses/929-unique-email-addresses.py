@@ -3,9 +3,6 @@ class Solution:
         dif = set()
         for e in emails:
             loc, dom = e.split("@")
-            p = loc.find("+")
-            if p == -1:
-                p = len(loc)
-            l = loc[:p].replace(".", "")
+            l = loc.split("+")[0].replace(".", "")
             dif.add(l + "@" + dom)
         return len(dif)

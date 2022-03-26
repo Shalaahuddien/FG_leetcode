@@ -1,9 +1,12 @@
 class Solution:
     def longestNiceSubstring(self, s: str) -> str:
-        ans = ''
-        for r in range(len(s)):
-            for l in range(r):
-                t = s[l:r+1]
-                if set(t) == set(t.swapcase()):
-                    ans = max(ans, t, key=len)
-        return ans
+        def dc(s):
+            if len(s) < 2: return ''
+            ss = set(s)
+            for i,c in enumerate(s):
+                if c.swapcase() not in ss:
+                    nl = dc(s[:i])
+                    nr = dc(s[i+1:])
+                    return max(nl,nr,key=len)
+            return s
+        return dc(s)

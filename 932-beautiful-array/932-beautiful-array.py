@@ -1,9 +1,8 @@
 class Solution:
     def beautifulArray(self, n: int) -> List[int]:
-        def rec(nums):
-            if len(nums) <=2:
-                return nums
-            left = rec(nums[::2])
-            right = rec(nums[1::2])
-            return left+right
-        return rec(list(range(1,n+1)))
+        @cache
+        def dc(N):
+            if N == 1: return [1]
+            left,right = dc((N+1)//2), dc(N//2)
+            return [2*x-1 for x in left] + [2*x for x in right]
+        return dc(n)

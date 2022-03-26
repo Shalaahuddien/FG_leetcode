@@ -1,5 +1,6 @@
 class Solution:
     def longestSubstring(self, s: str, k: int) -> int:
+        @cache
         def dc(s):
             if len(s) < k:
                 return ""

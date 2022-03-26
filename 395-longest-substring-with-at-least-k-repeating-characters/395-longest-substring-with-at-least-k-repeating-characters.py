@@ -3,13 +3,13 @@ class Solution:
         @cache
         def dc(s):
             if len(s) < k:
-                return ""
+                return 0
             freq = Counter(s)
             for i, c in enumerate(s):
                 if freq[c] < k:
                     sl = dc(s[:i])
                     sr = dc(s[i + 1 :])
-                    return max(sl, sr, key=len)
-            return s
+                    return max(sl, sr)
+            return len(s)
 
-        return len(dc(s))
+        return dc(s)

@@ -4,11 +4,11 @@ class Solution:
             l, r = 0, 0
             res = []
             while l < len(s):
-                res.append(s[l])
+                # res.append(s[l])
                 while r < len(s) and s[l] == s[r]:
                     r += 1
                 # s[l] != s[r] or r = len(s)
-                res.append(r - l)
+                res.append((s[l], r - l))
                 l = r
             return res
 
@@ -17,16 +17,11 @@ class Solution:
         for ew in map(enc, words):
             if len(ss) != len(ew):
                 continue
-            for i, st in enumerate(zip(ss, ew)):
-                x, y = st
-                if i % 2 == 0 and x != y:
+            for i in range(len(ss)):
+                if ss[i][0] != ew[i][0]:
                     break
-                if i % 2 == 1:
-                    # math
-                    if x == y or x > y and x >= 3:
-                        continue
-                    else:
-                        break
+                if not (ss[i][1] == ew[i][1] or ss[i][1] >= max(3, ew[i][1])):
+                    break
             else:
                 cnt += 1
                 # print(ss, ew)

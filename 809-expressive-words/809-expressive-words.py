@@ -1,22 +1,18 @@
 class Solution:
     def expressiveWords(self, s: str, words: List[str]) -> int:
-        def enc(s):
-            res = []
-            for k, grp in groupby(s):
-                res.append([k, len(list(grp))])
-            return res
+        def check(s, w):
+            i, j, i2, j2 = 0, 0, 0, 0
+            n, m = len(s), len(w)
+            while i < n and j < m:
+                if s[i] != w[j]:
+                    return False
+                while i2 < n and s[i2] == s[i]:
+                    i2 += 1
+                while j2 < m and w[j2] == w[j]:
+                    j2 += 1
+                if not (i2 - i == j2 - j or i2 - i >= max(3, j2 - j)):
+                    return False
+                i, j = i2, j2
+            return i == n and j == m
 
-        ss = enc(s)
-        cnt = 0
-        for ew in map(enc, words):
-            if len(ss) != len(ew):
-                continue
-            for i in range(len(ss)):
-                if ss[i][0] != ew[i][0]:
-                    break
-                if not (ss[i][1] == ew[i][1] or ss[i][1] >= max(3, ew[i][1])):
-                    break
-            else:
-                cnt += 1
-                # print(ss, ew)
-        return cnt
+        return sum(check(s, w) for w in words)

@@ -4,7 +4,4 @@ class Solution:
         for i, row in enumerate(mat):
             ones.append((row.count(1), i))
         ones.sort()
-        res = []
-        for i in range(k):
-            res.append(ones[i][1])
-        return res
+        return [x[1] for x in ones[:k]]

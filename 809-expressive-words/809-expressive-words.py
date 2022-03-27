@@ -1,15 +1,9 @@
 class Solution:
     def expressiveWords(self, s: str, words: List[str]) -> int:
         def enc(s):
-            l, r = 0, 0
             res = []
-            while l < len(s):
-                # res.append(s[l])
-                while r < len(s) and s[l] == s[r]:
-                    r += 1
-                # s[l] != s[r] or r = len(s)
-                res.append((s[l], r - l))
-                l = r
+            for k, grp in groupby(s):
+                res.append([k, len(list(grp))])
             return res
 
         ss = enc(s)

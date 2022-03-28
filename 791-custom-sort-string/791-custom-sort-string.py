@@ -1,12 +1,9 @@
 class Solution:
     def customSortString(self, order: str, s: str) -> str:
-        c2o = {c: o for o, c in enumerate(order)}
-        freq = Counter(s)
-
-        res = []
-        for c in c2o.keys():
-            if c in freq:
-                res.extend([c] * freq[c])
-        for ow in freq.keys() - c2o.keys():
-            res.extend([ow] * freq[ow])
-        return "".join(res)
+        ans, cnt = [], Counter(s)
+        for c in order:
+            if cnt[c]:
+                ans.extend([c] * cnt.pop(c))
+        for c, f in cnt.items():
+            ans.extend(c * f)
+        return "".join(ans)

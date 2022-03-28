@@ -1,36 +1,21 @@
 class Solution:
     def validTicTacToe(self, board: List[str]) -> bool:
-        allsum = 0
-        win = 0
-        row = [0] * 3
-        col = [0] * 3
-        diag = antidiag = 0
-        for r in range(len(board)):
-            for c in range(len(board[0])):
-                play = 0
-                if board[r][c] == "X":
-                    play = 1
-                elif board[r][c] == "O":
-                    play = -1
-                row[r] += play
-                col[c] += play
-                if r == c:
-                    diag += play
-                if r + c == len(board)-1:
-                    antidiag += play
-                allsum += play
-        if not 0 <= allsum <= 1:
-            return False
+        def win(p: str) -> bool:
+            return (
+                any((board[i][0] == p and board[i][1] == p and board[i][2] == p) or (board[0][i] == p and board[1][i] == p and board[2][i] == p) for i in range(3))
+                or (board[0][0] == p and board[1][1] == p and board[2][2] == p)
+                or (board[0][2] == p and board[1][1] == p and board[2][0] == p)
+            )
 
-        states = [*row, *col, diag, antidiag]
-        xwin = any(s == 3 for s in states)
-        owin = any(s == -3 for s in states)
-        if xwin == owin == True:
+        oCount = sum(row.count("O") for row in board)
+        xCount = sum(row.count("X") for row in board)
+        # case 1: xCount must = oCount or oCount+1
+        if oCount != xCount and oCount != xCount - 1:
             return False
-        if xwin:
-            if allsum != 1:
-                return False
-        if owin:
-            if allsum != 0:
-                return False
+        # case 2: if X win, must xCount = oCount +1
+        if oCount != xCount - 1 and win("X"):
+            return False
+        # case 3: if O win, must xCount = oCount
+        if oCount != xCount and win("O"):
+            return False
         return True

@@ -5,29 +5,20 @@ class Solution:
         for i in range(len(s)):
             for w in words:
                 if s[i:].startswith(w):
-                    intervals.append([i, i + len(w) - 1])
+                    intervals.append([i, i + len(w)])
 
         def merge(I):
-            if not I:
-                return []
-
             res = []
-            l, r = I[0]
-            for i, j in intervals[1:]:
-                if i > r+1:
-                    res.append((l, r))
-                    l, r = i, j
+            for itv in I:
+                if not res or res[-1][1] < itv[0]:
+                    res.append(itv)
                 else:
-                    r = max(r, j)
-            res.append((l, r))
+                    res[-1][1] = max(res[-1][1], itv[1])
             return res
 
         merged = merge(intervals)
-        # print(intervals)
-        # print(merged)
-
-        ss = list(s)
-        for l, r in merged:
-            ss[l] = "<b>" + ss[l]
-            ss[r] = ss[r] + "</b>"
-        return "".join(ss)
+        res, prev_end = [], 0
+        for start, end in merged:
+            res.append(s[prev_end:start] + "<b>" + s[start:end] + "</b>")
+            prev_end = end
+        return "".join(res + [s[prev_end:]])

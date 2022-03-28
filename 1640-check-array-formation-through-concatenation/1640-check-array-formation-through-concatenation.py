@@ -1,31 +1,22 @@
 class Solution:
     def canFormArray(self, arr: List[int], pieces: List[List[int]]) -> bool:
-        p_i = list([i, 0] for i in range(len(pieces)))
-        last_sublist = -1
-        for a in arr:
-            if last_sublist == -1:
-                for i, pi in enumerate(p_i):
-                    pidx, it = pi[0], pi[1]
-                    p = pieces[pidx]
-                    if it < len(p) and p[it] == a:
-                        last_sublist = i
-                        it += 1
-                        if it == len(p):
-                            last_sublist = -1
-                        else:
-                            pi[1] = it
-                        break
+        pieces.sort(key=lambda x: x[0])
+        p_len = len(pieces)
+        n = len(arr)
+        i = 0
+        while i < n:
+            left, right = 0, p_len - 1
+            found = -1
+            # use bisect to find target piece
+            while left < right:
+                mid = (left + right) // 2
+                if pieces[mid][0] >= arr[i]:
+                    right = mid
                 else:
+                    left = mid + 1
+            target_piece = pieces[left]
+            for x in target_piece:
+                if x != arr[i]:
                     return False
-            else:
-                # in last_sublist
-                pidx, it = p_i[last_sublist]
-                p = pieces[pidx]
-                if p[it] != a:
-                    return False
-                it += 1
-                if it == len(p):
-                    last_sublist = -1
-                else:
-                    p_i[last_sublist][1] = it
+                i += 1
         return True

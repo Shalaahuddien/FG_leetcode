@@ -28,9 +28,9 @@ class Solution:
                 "-.--",
                 "--..",
             ]
-        c2m = {c: m for c, m in zip(ascii_lowercase, MORSE)}
         res = set()
         for w in words:
-            morse = "".join([c2m[c] for c in w])
+            morse = "".join([MORSE[ord(c) - ord("a")] for c in w])
+
             res.add(morse)
         return len(res)

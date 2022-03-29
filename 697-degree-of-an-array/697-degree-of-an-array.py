@@ -1,19 +1,14 @@
 class Solution:
     def findShortestSubArray(self, nums: List[int]) -> int:
-        P = defaultdict(lambda: [-1, -1])
-        F = defaultdict(int)
-        mxlen = 0
-        for i, n in enumerate(nums):
-            if P[n][0] == -1:
-                P[n][0] = i
-            else:
-                P[n][1] = i
-            F[n] += 1
-            mxlen = max(mxlen, F[n])
-
-        mnlen = len(nums)
-        for n, f in F.items():
-            if f == mxlen:
-                l, r = P[n]
-                mnlen = min(mnlen, r - l + 1)
-        return max(1, mnlen)
+        left, right, count = {}, {}, defaultdict(int)
+        for i, x in enumerate(nums):
+            if x not in left:
+                left[x] = i
+            right[x] = i
+            count[x] += 1
+        ans = len(nums)
+        degree = max(count.values())
+        for x in count:
+            if count[x] == degree:
+                ans = min(ans, right[x] - left[x] + 1)
+        return ans

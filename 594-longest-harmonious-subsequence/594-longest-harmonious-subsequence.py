@@ -1,8 +1,11 @@
 class Solution:
     def findLHS(self, nums: List[int]) -> int:
-        cnt = Counter(nums)
+        C = Counter()
         mx = 0
         for n in nums:
-            if n - 1 in cnt or n + 1 in cnt:
-                mx = max(mx, cnt[n - 1] + cnt[n], cnt[n + 1] + cnt[n])
+            C[n] += 1
+            if n - 1 in C:
+                mx = max(mx, C[n] + C[n - 1])
+            if n + 1 in C:
+                mx = max(mx, C[n] + C[n + 1])
         return mx

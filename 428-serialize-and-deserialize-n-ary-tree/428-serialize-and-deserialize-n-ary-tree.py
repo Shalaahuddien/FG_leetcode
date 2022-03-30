@@ -33,15 +33,17 @@ class Codec:
         """
         if not data:
             return None
-        q = deque(data.split(','))
         def fn():
-            if not q:
-                return None
-            node = Node(int(q.popleft()), [])
-            while q[0] != '!':
-                node.children.append(fn())
-            q.popleft()
-            return node
+            v = next(it)
+            if v != '!':
+                node = Node(int(v), [])
+                k = fn()
+                while k:
+                    node.children.append(k)
+                    k = fn()
+                return node
+
+        it = iter(data.split(','))
         return fn()
             
         

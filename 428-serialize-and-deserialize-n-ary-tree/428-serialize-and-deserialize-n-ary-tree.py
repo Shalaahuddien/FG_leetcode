@@ -7,38 +7,44 @@ class Node(object):
 """
 
 class Codec:
-    def serialize(self, root):
+    def serialize(self, root: 'Node') -> str:
+        """Encodes a tree to a single string.
+        
+        :type root: Node
+        :rtype: str
+        """
         ser = []
-
         def dfs(T: Node):
             if not T:
-                return
+                return 
             ser.append(str(T.val))
             for k in T.children:
                 dfs(k)
-            ser.append("!")
-
+            ser.append('!')
         dfs(root)
-        return " ".join(ser)
-
-    def deserialize(self, data):
+        return ','.join(ser)
+        
+	
+    def deserialize(self, data: str) -> 'Node':
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: Node
+        """
         if not data:
             return None
-        tokens = deque(data.split(" "))
-        root = Node(int(tokens.popleft()), [])
-
-        def helper(T: Node):
-            if not tokens:
-                return
-            while tokens[0] != "!":
-                v = tokens.popleft()
-                kid = Node(int(v), [])
-                T.children.append(kid)
-                helper(kid)
-            tokens.popleft()  # discard the '!'
-
-        helper(root)
-        return root
+        q = deque(data.split(','))
+        def fn():
+            if not q:
+                return None
+            node = Node(int(q.popleft()), [])
+            while q[0] != '!':
+                node.children.append(fn())
+            q.popleft()
+            return node
+        return fn()
+            
+        
 
 # Your Codec object will be instantiated and called as such:
 # codec = Codec()

@@ -2,10 +2,7 @@ class Solution:
     def evaluate(self, s: str, knowledge: List[List[str]]) -> str:
         l, r = 0, 0
         res = []
-        d = {}
-        for q, a in knowledge:
-            d[q] = a
-        print(d)
+        d = {k: v for k, v in knowledge}
         while l < len(s):
             if s[l] == "(":
                 l += 1

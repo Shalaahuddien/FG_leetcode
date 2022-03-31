@@ -1,17 +1,16 @@
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
-        def feasible(mxs)->bool:
+        def feasible(thredshold)->bool:
             # check if split m groups, largest sum <= mxs
-            count, sm = 1, 0
+            count, subsum = 1, 0
             for n in nums:
-                if sm + n > mxs:
+                subsum += n
+                if subsum > thredshold:
+                    subsum = n
                     count += 1
                     if count > m:
                         return False
-                    sm = n
-                else:
-                    sm += n
-            return count <= m
+            return True
         
         if m > len(nums): return False
         l,r = max(nums), sum(nums)

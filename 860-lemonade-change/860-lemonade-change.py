@@ -1,22 +1,15 @@
 class Solution:
     def lemonadeChange(self, bills: List[int]) -> bool:
-        cnt = defaultdict(int)
+        five = ten = 0
         for b in bills:
             if b == 5:
-                cnt[5] += 1
+                five += 1
             elif b == 10:
-                if cnt[5] > 0:
-                    cnt[5] -= 1
-                    cnt[10] += 1
-                else:
-                    return False
+                five, ten = five - 1, ten + 1
+            elif ten > 0:
+                five, ten = five - 1, ten - 1
             else:
-                if cnt[5] > 0 and cnt[10] > 0:
-                    cnt[5] -= 1
-                    cnt[10] -= 1
-                    cnt[20] += 1
-                elif cnt[5] >= 3:
-                    cnt[5] -= 3
-                else:
-                    return False
+                five -= 3
+            if five < 0:
+                return False
         return True

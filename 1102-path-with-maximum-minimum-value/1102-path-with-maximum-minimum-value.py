@@ -1,22 +1,37 @@
 class Solution:
     def maximumMinimumPath(self, grid: List[List[int]]) -> int:
-        def mxpq_push(v,x,y):
-            heappush(mxpq, (-v,x,y))
-        def mxpq_pop():
-            negv, x,y = heappop(mxpq)
-            return -negv, x,y
-        
-        mxpq = []
-        seen = set([(0,0)])
-        mxpq_push(grid[0][0],0,0)
-        m,n = len(grid),len(grid[0])
-        while mxpq:
-            score, x,y = mxpq_pop()
-            if (x,y) == (m-1,n-1):
-                return score
-            for dx,dy in [(0,1),(0,-1),(1,0),(-1,0)]:
-                xx,yy = x+dx,y+dy
-                if 0<=xx<m and 0<= yy< n and (xx,yy) not in seen:
-                    seen.add((xx,yy))
-                    mxpq_push(min(score, grid[xx][yy]), xx,yy)
+        R, C = len(grid), len(grid[0])
+        root = list(range(R * C))
+        sz = [1] * (R * C)
+        D = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        visited = set()
+
+        def find(i):
+            if i != root[i]:
+                root[i] = find(root[i])
+            return root[i]
+
+        def union(i, j):
+            x, y = map(find, [i, j])
+            if x == y:
+                return
+            if sz[x] > sz[y]:
+                x, y = y, x
+            # make sure px is smaller coorp
+            root[x] = y
+            sz[y] += sz[x]
+
+        vals = [(r, c) for r in range(R) for c in range(C)]
+        vals.sort(key=lambda x: grid[x[0]][x[1]], reverse=True)
+        for i, j in vals:
+            visited.add((i, j))
+            for di, dj in D:
+                ii, jj = i + di, j + dj
+                if 0 <= ii < R and 0 <= jj < C and (ii, jj) in visited:
+                    # XXX: only union if cur and neighbor are visited
+                    p, pp = i * C + j, ii * C + jj
+                    union(p, pp)
+                    # check if top-left is connected w/ bottom-right
+                    if find(0) == find(R * C - 1):
+                        return grid[i][j]
         return -1

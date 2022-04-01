@@ -5,6 +5,8 @@ class Solution:
         def insert(s):
             cur = root
             for c in s.split("/"):
+                if "#" in cur:
+                    break
                 cur = cur.setdefault(c, {})
             cur["#"] = s
 

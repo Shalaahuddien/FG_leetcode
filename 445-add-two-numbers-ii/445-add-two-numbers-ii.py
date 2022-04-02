@@ -5,17 +5,24 @@
 #         self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-        def l2n(l):
-            n = 0
-            while l:
-                n = n * 10 + l.val
-                l = l.next
-            return n
+        def rev(head: ListNode):
+            pre, cur = None, head
+            while cur:
+                nxt = cur.next
+                cur.next = pre
+                pre = cur
+                cur = nxt
+            return pre
 
-        def n2l(n):
+        def pochmann_2(l1, l2):
+            addends = l1, l2
+            carry = 0
             dummy = end = ListNode(None)
-            for v in str(n):
-                end.next = end = ListNode(v)
+            while addends or carry:
+                carry += sum(l.val for l in addends)
+                addends = [l.next for l in addends if l.next]
+                carry,d = divmod(carry, 10)
+                end.next = end = ListNode(d)
             return dummy.next
 
-        return n2l(sum(map(l2n, [l1, l2])))
+        return rev(pochmann_2(rev(l1), rev(l2)))

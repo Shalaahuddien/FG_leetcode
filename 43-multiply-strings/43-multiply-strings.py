@@ -9,9 +9,6 @@ class Solution:
                 ten,one = divmod(xy,10)
                 res[i+j+1] += ten
                 res[i+j] = one
-        
-        if res[-1] == 0:
-            res.pop()
-        return ''.join(map(str, res[::-1]))
+        return ''.join(map(str, res[::-1])).lstrip('0')
          
                 

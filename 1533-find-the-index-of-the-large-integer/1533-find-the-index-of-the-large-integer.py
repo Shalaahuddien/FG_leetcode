@@ -24,11 +24,6 @@ class Solution:
                 compare = reader.compareSub(lo, mid, mid + 1, hi)
             else:
                 compare = reader.compareSub(lo, mid, mid, hi)
-
-            # if compare < 0:
-            #     lo = mid + 1
-            # else:
-            #     hi = mid
             if compare >= 0:
                 hi = mid
             else:

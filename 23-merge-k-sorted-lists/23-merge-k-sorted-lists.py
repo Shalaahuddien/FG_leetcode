@@ -5,16 +5,28 @@
 #         self.next = next
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        dummy = h = ListNode(None)
-        q = []
-        for n in lists:
-            if n:
-                heappush(q, (n.val, id(n), n))
-        while q:
-            v, _, n = heappop(q)
-            h.next = n
-            h = h.next
+        def merge(lists):
+            sz = len(lists)
+            if not sz:
+                return None
+            if sz == 1:
+                return lists[0]
 
-            if n.next:
-                heappush(q, (n.next.val, id(n.next), n.next))
-        return dummy.next
+            mid = sz // 2
+            l, r = map(merge, [lists[:mid], lists[mid:]])
+            return merge2lists(l, r)
+
+        def merge2lists(l1, l2):
+            dummy = end = ListNode(None)
+            while l1 and l2:
+                if l1.val <= l2.val:
+                    end.next = l1
+                    l1 = l1.next
+                else:
+                    end.next = l2
+                    l2 = l2.next
+                end = end.next
+            end.next = l1 or l2
+            return dummy.next
+
+        return merge(lists)

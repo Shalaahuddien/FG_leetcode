@@ -9,7 +9,7 @@ class Solution:
         vals = set(nums)
         pre, cur = None, head
         while cur:
-            pre, cur = cur, cur.next
-            if pre.val in vals and cur and cur.val in vals:
+            if pre and pre.val in vals and cur.val in vals:
                 cc -= 1
+            pre, cur = cur, cur.next
         return cc

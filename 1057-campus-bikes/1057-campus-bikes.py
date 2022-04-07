@@ -11,6 +11,8 @@ class Solution:
         used_bikes = set()
         result = [-1] * len(workers)
         for dist, i, j in distances:
+            if len(used_bikes) == len(workers):
+                break
             # print(dist, i, j)
             if result[i] == -1 and j not in used_bikes:
                 used_bikes.add(j)

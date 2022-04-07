@@ -1,15 +1,12 @@
 class Solution:
     def shortestToChar(self, s: str, c: str) -> List[int]:
-        ans = [len(s) + 1] * len(s)
-        prev = next = -1
-        for i in range(len(s)):
-            if c == s[i]:
-                prev = i
-            if prev != -1:
-                ans[i] = i - prev
-        for j in range(len(s) - 1, -1, -1):
-            if c == s[j]:
-                next = j
-            if next != -1:
-                ans[j] = min(ans[j], next - j)
-        return ans
+        def letter_get(ch, dir):
+            n = len(s)
+            res, cur = [0] * n, -n
+            for i in range(n)[::dir]:
+                if s[i] == ch:
+                    cur = i
+                res[i] = abs(i - cur)
+            return res
+
+        return [min(x, y) for x, y in zip(letter_get(c, 1), letter_get(c, -1))]

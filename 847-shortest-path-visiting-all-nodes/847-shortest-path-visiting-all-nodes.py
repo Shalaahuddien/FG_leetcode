@@ -1,22 +1,31 @@
 class Solution:
     def shortestPathLength(self, graph: List[List[int]]) -> int:
         N = len(graph)
-        ALL = (1 << N) - 1
-        cache = {}
+        INF = 10**10
+        dist = [[INF] * N for _ in range(N)]
 
-        def dp(u, bm):
-            state = (u, bm)
-            if state in cache:
-                return cache[state]
-            if bm & (bm - 1) == 0:
-                # Brian Kernighan method to check if num has only single bit set
-                return 0
-            cache[state] = float('inf')
+        for u in range(N):
+            dist[u][u] = 0
             for v in graph[u]:
-                if bm & (1 << v):  # cuz we are backward direction
-                    already_visited = 1 + dp(v, bm)
-                    not_visited = 1 + dp(v, bm ^ (1 << u))
-                    cache[state] = min(cache[state], already_visited, not_visited)
-            return cache[state]
+                dist[u][v] = 1
 
-        return min(dp(u, ALL) for u in range(N))
+        # Floyd-Warshall's ASSP
+        for k in range(N):
+            for i in range(N):
+                for j in range(N):
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+        @cache
+        def dp(node, visited):
+            if visited == (1 << N) - 1:  # end_state
+                return 0
+            best = INF
+            for i in range(N):
+                if ((1 << i) & visited) == 0:  # unvisited i
+                    best = min(best, dp(i, (1 << i) | visited) + dist[node][i])
+            return best
+
+        best = INF
+        for i in range(N):
+            best = min(best, dp(i, (1 << i)))
+        return best

@@ -5,16 +5,16 @@ class Solution:
             AL[u].append(v)
             AL[v].append(u)
 
-        # @cache
         def dfs(u):
             seen.add(u)
-            selfOfKidHasApple = hasApple[u]
+            appleInMe = hasApple[u]
             for v in AL[u]:
-                if v not in seen:
-                    selfOfKidHasApple |= dfs(v)
-            if not selfOfKidHasApple:
-                AL.pop(u)
-            return selfOfKidHasApple
+                if v in seen:
+                    continue
+                appleInMe |= dfs(v)
+            if not appleInMe:
+                del AL[u]
+            return appleInMe
     
         seen = set()
         dfs(0)

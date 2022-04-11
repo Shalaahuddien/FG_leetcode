@@ -10,24 +10,29 @@ class Solution:
                     x, y = i + dx, j + dy
                     if (x, y) == (i, j):
                         continue
-                    if 0 <= x < m and 0 <= y < n:
-                        ones += copy_board[x][y]
+                    if 0 <= x < m and 0 <= y < n and abs(board[x][y]) == 1:
+                        ones += 1
             return ones
 
         m, n = len(board), len(board[0])
-        copy_board = [[board[r][c] for c in range(n)] for r in range(m)]
         for i in range(m):
             for j in range(n):
                 ones = cnt(i, j)
-                # print(i, j, ones)
-                if copy_board[i][j] == 1:
+                if board[i][j] == 1:
                     if ones < 2:
-                        board[i][j] = 0
+                        board[i][j] = -1
                     elif 2 <= ones <= 3:
                         board[i][j] = 1
                     else:
-                        board[i][j] = 0
+                        board[i][j] = -1
                 else:
                     if ones == 3:
-                        board[i][j] = 1
+                        board[i][j] = 2
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == -1:
+                    board[i][j] = 0
+                if board[i][j] == 2:
+                    board[i][j] = 1
         return board

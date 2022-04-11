@@ -3,13 +3,18 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        def rev(l,r):
-            while l < r:
-                nums[l],nums[r] = nums[r],nums[l]
-                l,r = l+1,r-1
-        L = len(nums)
-        k = k%L
-        rev(0, L-k-1)
-        rev(L-k,L-1)
-        rev(0,L-1)
-        
+        n = len(nums)
+        k %= n
+
+        start_idx = count = 0
+        while count < n:
+            cur_idx, tmp = start_idx, nums[start_idx]
+            while True:
+                nxt_idx = (cur_idx + k) % n
+                nums[nxt_idx], tmp = tmp, nums[nxt_idx]
+                cur_idx = nxt_idx
+                count += 1
+
+                if start_idx == cur_idx:
+                    break
+            start_idx += 1

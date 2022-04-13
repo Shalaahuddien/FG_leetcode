@@ -8,19 +8,12 @@ class Solution:
     def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
         mx = 0
 
-        def post(node: TreeNode):
+        def post(node: TreeNode, fa):
             if not node:
                 return 0
-            pass_node = 0
-            longest = 1
+            l,r = post(node.left, node.val), post(node.right, node.val)
             nonlocal mx
-            for kid in (node.left, node.right):
-                side = post(kid)
-                if kid and kid.val == node.val:
-                    pass_node += side
-                    longest = max(longest, 1 + side)
-            mx = max(mx, pass_node)
-            return longest
-
-        post(root)
+            mx = max(mx, l+r)
+            return 1 + max(l,r) if node.val == fa else 0
+        post(root, None)
         return mx

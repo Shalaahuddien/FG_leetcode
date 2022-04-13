@@ -7,31 +7,24 @@
 
 class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
-        AL = defaultdict(list)
+        u2fa = {}
 
-        def dfs(par: TreeNode, kid: TreeNode):
-            if par and kid:
-                AL[par.val].append(kid.val)
-                AL[kid.val].append(par.val)
-            if kid.left: dfs(kid, kid.left)
-            if kid.right: dfs(kid, kid.right)
+        def dfs(node: TreeNode, fa=None):
+            if node:
+                u2fa[node] = fa
+                dfs(node.left, node)
+                dfs(node.right, node)
 
-        dfs(None, root)
+        dfs(root, None)
 
-        # start BFS from target to all steps == k
-        q = deque([target.val])
-        seen = set([target.val])
-        step = 0
-        res = []
+        q = deque([(target, 0)])
+        seen = {target}
         while q:
-            for _ in range(len(q)):
-                cur = q.popleft()
-                if step == k:
-                    res.append(cur)
-                    continue
-                for neig in AL[cur]:
-                    if neig not in seen:
-                        seen.add(neig)
-                        q.append(neig)
-            step += 1
-        return res
+            u, d = q.popleft()
+            if d == k:
+                return [u.val] + [n.val for n, d in q]
+            for v in (u.left, u.right, u2fa[u]):
+                if v and v not in seen:
+                    seen.add(v)
+                    q.append((v, d + 1))
+        return []

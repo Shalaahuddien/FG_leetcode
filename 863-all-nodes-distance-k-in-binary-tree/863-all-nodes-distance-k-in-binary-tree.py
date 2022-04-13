@@ -7,24 +7,25 @@
 
 class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
-        u2fa = {}
+        fas = {}
 
-        def dfs(node: TreeNode, fa=None):
+        def find_fa(node, fa=None):
             if node:
-                u2fa[node] = fa
-                dfs(node.left, node)
-                dfs(node.right, node)
+                fas[node] = fa
+                find_fa(node.left, node)
+                find_fa(node.right, node)
 
-        dfs(root, None)
+        res = []
 
-        q = deque([(target, 0)])
-        seen = {target}
-        while q:
-            u, d = q.popleft()
-            if d == k:
-                return [u.val] + [n.val for n, d in q]
-            for v in (u.left, u.right, u2fa[u]):
-                if v and v not in seen:
-                    seen.add(v)
-                    q.append((v, d + 1))
-        return []
+        def walk(node, prev, k):
+            if not node:
+                return
+            if k == 0:
+                res.append(node.val)
+                return
+            for v in (node.left, node.right, fas.get(node)):
+                if v != prev:
+                    walk(v, node, k - 1)
+        find_fa(root)
+        walk(target, None, k)
+        return res

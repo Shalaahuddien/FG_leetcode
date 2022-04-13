@@ -6,15 +6,12 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        goods = []
+        def post_dfs(T: TreeNode, mx):
+            if not T:
+                return 0
+            res = 1 if T.val >= mx else 0
+            mx = max(mx, T.val)
+            l, r = post_dfs(T.left, mx), post_dfs(T.right, mx)
+            return res + l + r
 
-        def dfs(node: TreeNode, premax: int):
-            if not node:
-                return
-            if premax <= node.val:
-                goods.append(node.val)
-            for k in (node.left, node.right):
-                dfs(k, max(premax, node.val))
-
-        dfs(root, float('-inf'))
-        return len(goods)
+        return post_dfs(root, -10000)

@@ -6,11 +6,14 @@
 #         self.right = right
 class Solution:
     def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
-        def leaves(T: TreeNode):
+        def dfs(T: TreeNode):
             if not T:
-                return []
+                return
             if not (T.left or T.right):
-                return [T.val]
-            return leaves(T.left) + leaves(T.right)
-        l1, l2 = leaves(root1), leaves(root2)
-        return l1 == l2
+                yield T.val
+            for i in dfs(T.left):
+                yield i
+            for i in dfs(T.right):
+                yield i
+
+        return all(a == b for a, b in itertools.zip_longest(dfs(root1), dfs(root2)))

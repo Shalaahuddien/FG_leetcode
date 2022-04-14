@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def maxProduct(self, root: Optional[TreeNode]) -> int:
-        small = 0
+        total = 0
         sms = []
 
         def dfs(T: TreeNode):
@@ -17,8 +17,9 @@ class Solution:
             sms.append(smT)
             return smT
 
-        MOD = 10**9+7
-        small = dfs(root)
-        sms.sort(key=lambda x: abs(x - small // 2))
-        pair = small - sms[0]
-        return (pair * sms[0]) % MOD
+        MOD = 10**9 + 7
+        total = dfs(root)
+        ans = 0
+        for s in sms:
+            ans = max(ans, s * (total - s))
+        return ans % MOD

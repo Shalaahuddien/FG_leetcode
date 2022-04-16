@@ -6,13 +6,12 @@
 #         self.right = right
 class Solution:
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        def ino(r,acc):
-            if r:
-                ino(r.right,acc)
-                r.val += acc[0]
-                acc[0] = r.val
-                ino(r.left, acc)
-                return r
-        ino(root,[0])
+        def ino(T: TreeNode, sumTillNow):
+            if T:
+                ino(T.right, sumTillNow)
+                T.val += sumTillNow[0]
+                sumTillNow[0] = T.val
+                ino(T.left, sumTillNow)
+
+        ino(root, [0])
         return root
-                

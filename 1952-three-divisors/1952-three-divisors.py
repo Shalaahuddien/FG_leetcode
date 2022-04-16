@@ -2,12 +2,12 @@ class Solution:
     def isThree(self, n: int) -> bool:
         if n < 4:
             return False
-        cnt = 2
-        for d in range(2, isqrt(n) + 1):
-            if n % d == 0:
-                cnt += 1
-                if d * d != n:
-                    cnt += 1
-                if cnt > 3:
-                    break
-        return cnt == 3
+        x = isqrt(n)
+        # check if n is square number
+        if x * x != n:
+            return False
+        # check if n is square of PRIME, so check if x is PRIME
+        for i in range(2, isqrt(x) + 1):
+            if x % i == 0:
+                return False
+        return True

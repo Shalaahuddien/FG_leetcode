@@ -6,6 +6,7 @@
 #         self.right = right
 class BSTIterator:
 
+    # T = O(h) where h is height of tree
     def __init__(self, root: Optional[TreeNode]):
         self.stk = []  # for tree traversal
         self.arr = []  # for storing the vals once it's processed
@@ -21,11 +22,14 @@ class BSTIterator:
     def hasNext(self) -> bool:
         return self.stk or self.idx + 1 < len(self.arr)
 
+    # T = O(h)
     def next(self) -> int:
         self.idx += 1
         if self.idx < len(self.arr):
             return self.arr[self.idx]
+
         topmost = self.stk.pop()
+        # update arr in inorder fashion
         self.arr.append(topmost.val)
         # perform left inorder if needed
         self._left_ino(topmost.right)

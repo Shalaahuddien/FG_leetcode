@@ -6,14 +6,11 @@
 #         self.right = right
 class Solution:
     def increasingBST(self, root: TreeNode) -> TreeNode:
-        def ino(T: TreeNode)->None:
-            if T:
-                ino(T.left)
-                T.left = None
-                nonlocal end
-                end.right = T
-                end = T
-                ino(T.right)
-        dummy = end = TreeNode(None)
-        ino(root)
-        return dummy.right
+        def dfs(T: TreeNode, next)->TreeNode:
+            if not T:
+                return next
+            head = dfs(T.left, T)
+            T.left =None
+            T.right = dfs(T.right, next)
+            return head
+        return dfs(root, None)

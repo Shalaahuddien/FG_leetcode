@@ -3,21 +3,33 @@ class Solution:
         m, n = len(grid), len(grid[0])
         T, L = 0, 0
         B, R = m - 1, n - 1
-
         while T < B and L < R:
-            no_elems = 2 * (B - T + 1) + 2 * (R - L + 1) - 4
-            no_rotate = k % no_elems
-            for _ in range(no_rotate):
-                tmp = grid[T][L]
-                for j in range(L, R):
-                    grid[T][j] = grid[T][j + 1]
-                for i in range(T, B):
-                    grid[i][R] = grid[i + 1][R]
-                for j in range(R, L, -1):
-                    grid[B][j] = grid[B][j - 1]
-                for i in range(B, T, -1):
-                    grid[i][L] = grid[i - 1][L]
-                grid[T + 1][L] = tmp
+            path = []
+            for c in range(L, R):
+                path.append(grid[T][c])
+            for r in range(T, B):
+                path.append(grid[r][R])
+            for c in range(R, L, -1):
+                path.append(grid[B][c])
+            for r in range(B, T, -1):
+                path.append(grid[r][L])
+
+            kk = k % len(path)
+            path = path[kk:] + path[:kk]
+            i = 0
+            for c in range(L, R):
+                grid[T][c] = path[i]
+                i += 1
+            for r in range(T, B):
+                grid[r][R] = path[i]
+                i += 1
+            for c in range(R, L, -1):
+                grid[B][c] = path[i]
+                i += 1
+            for r in range(B, T, -1):
+                grid[r][L] = path[i]
+                i += 1
             T, L = T + 1, L + 1
             B, R = B - 1, R - 1
+
         return grid

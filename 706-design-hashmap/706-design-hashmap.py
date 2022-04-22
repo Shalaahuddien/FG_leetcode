@@ -1,7 +1,7 @@
 class MyHashMap:
 
     def __init__(self):
-        self.hsize = int(1e3)
+        self.hsize = 1999
         self.rad = 33
         self.buckets = [[] for _ in range(self.hsize)]
 

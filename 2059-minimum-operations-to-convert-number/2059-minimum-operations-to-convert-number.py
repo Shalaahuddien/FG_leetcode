@@ -1,25 +1,24 @@
 class Solution:
     def minimumOperations(self, nums: List[int], start: int, goal: int) -> int:
-        q = deque([(start, 0)])
-        vis = set(q)
-
-        while q:
-            for _ in range(len(q)):
-                v, s = q.popleft()
-                if v == goal:
-                    return s
-                if s == 1000:
-                    return -1
-                if not (0 <= v <= 1000):
-                    continue
+        q1, q2 = set([start]), set([goal])
+        step = 0
+        vis = set([start, goal])
+        while q1:
+            # 交换队列大小，保证BFS总是展开小的那一侧
+            if len(q1) > len(q2):
+                q1, q2 = q2, q1
+            q1_nxt = set()
+            for v in q1:
+                # if v in q2:
+                #     return step
                 for n in nums:
-                    if v + n not in vis:
-                        q.append((v + n, s + 1))
-                        vis.add(v + n)
-                    if v - n not in vis:
-                        q.append((v - n, s + 1))
-                        vis.add(v - n)
-                    if v ^ n not in vis:
-                        q.append((v ^ n, s + 1))
-                        vis.add(v ^ n)
+                    for vv in (v + n, v - n, v ^ n):
+                        if vv in q2:
+                            return step + 1
+                        if vv in vis or not 0 <= vv <= 1000:
+                            continue
+                        vis.add(vv)
+                        q1_nxt.add(vv)
+            q1 = q1_nxt
+            step += 1
         return -1

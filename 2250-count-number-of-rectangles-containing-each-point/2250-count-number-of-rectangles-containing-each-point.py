@@ -5,9 +5,8 @@ class Solution:
         for l, h in rectangles:
             h2l[h].append(l)
         cnt = [0] * len(points)
-        i = 0
-        for x, y in points:
+        for i, xy in enumerate(points):
+            x, y = xy
             for h in range(y, 101):
                 cnt[i] += len(h2l[h]) - bisect_left(h2l[h], x)
-            i += 1
         return cnt

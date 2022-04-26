@@ -1,42 +1,18 @@
 class Solution:
     def numRookCaptures(self, board: List[List[str]]) -> int:
-        def capture(i, j):
-            cap = 0
-            # row
-            for r in range(i - 1, -1, -1):
-                if board[r][j] == "B":
+        DIR = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] == "R":
+                    x0, y0 = i, j
+        res = 0
+        for i, j in DIR:
+            x, y = x0 + i, y0 + j
+            while 0 <= x < 8 and 0 <= y < 8:
+                if board[x][y] == "p":
+                    res += 1
                     break
-                elif board[r][j] == "p":
-                    cap += 1
+                if board[x][y] != ".":
                     break
-            for r in range(i + 1, m):
-                if board[r][j] == "B":
-                    break
-                elif board[r][j] == "p":
-                    cap += 1
-                    break
-            for c in range(j - 1, -1, -1):
-                if board[i][c] == "B":
-                    break
-                elif board[i][c] == "p":
-                    cap += 1
-                    break
-            for c in range(j + 1, n):
-                if board[i][c] == "B":
-                    break
-                elif board[i][c] == "p":
-                    cap += 1
-                    break
-            return cap
-
-        m, n = len(board), len(board[0])
-        rooks = []
-        cnt = 0
-        for r in range(m):
-            for c in range(n):
-                if board[r][c] == "R":
-                    rooks.append((r, c))
-
-        for i, j in rooks:
-            cnt += capture(i, j)
-        return cnt
+                x, y = x + i, y + j
+        return res

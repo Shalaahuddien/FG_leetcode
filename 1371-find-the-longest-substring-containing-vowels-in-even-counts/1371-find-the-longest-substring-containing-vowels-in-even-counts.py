@@ -1,13 +1,11 @@
 class Solution:
     def findTheLongestSubstring(self, s: str) -> int:
-        d = {c:v for c,v in zip('aeiou', [0,1,2,3,4])}
-        res = 0
-        mask = 0
-        occ = {0:-1}
-        for i,c in enumerate(s):
-            if c in d:
-                mask ^= (1<<d[c])
-            if mask!= 0 and mask not in occ:
-                occ[mask] = i
-            res = max(res, i-occ[mask])
-        return res
+        for l in range(len(s), -1, -1):
+            # len(substr) = j-i+1 = l ===> j = l+i-1 < len(s) => i < len(s)-l+1
+            for i in range(len(s) - l + 1):
+                sub = s[i : i + l]
+                for c in "aeiou":
+                    if sub.count(c) % 2 != 0:
+                        break
+                else:
+                    return l

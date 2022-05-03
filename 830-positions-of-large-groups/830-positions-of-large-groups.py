@@ -1,10 +1,10 @@
 class Solution:
     def largeGroupPositions(self, s: str) -> List[List[int]]:
-        pre, idx = "", 0
         res = []
-        for i, c in enumerate(s + "*"):
-            if pre != c:
-                if pre and i - idx >= 3:
-                    res.append([idx, i - 1])
-                pre, idx = c, i
+        i = 0
+        for j in range(len(s)):
+            if j == len(s)-1 or s[j] != s[j+1]:
+                if j -i+1>= 3:
+                    res.append([i,j])
+                i = j+1
         return res

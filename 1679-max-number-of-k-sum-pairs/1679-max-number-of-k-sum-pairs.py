@@ -1,15 +1,12 @@
 class Solution:
     def maxOperations(self, nums: List[int], k: int) -> int:
-        nums.sort()
-        l, r = 0, len(nums) - 1
+        seen = Counter()
         res = 0
-        while l < r:
-            lr = nums[l] + nums[r]
-            if lr < k:
-                l += 1
-            elif lr > k:
-                r -= 1
-            else:
+        for b in nums:
+            a = k - b
+            if seen[a] > 0:
                 res += 1
-                l, r = l + 1, r - 1
+                seen[a] -= 1
+            else:
+                seen[b] += 1
         return res

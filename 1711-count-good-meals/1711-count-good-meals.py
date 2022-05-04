@@ -1,15 +1,9 @@
 class Solution:
     def countPairs(self, deliciousness: List[int]) -> int:
-        freq = Counter(deliciousness)
+        freq = Counter()
         res = 0
-        for n in freq:
+        for x in deliciousness:
             for k in range(22):
-                o = 2**k - n
-                if o in freq:
-                    if o != n:
-                        res += freq[n] * freq[o]
-                    else:
-                        res += freq[n] * (freq[n] - 1)
-                    # print(n, o, freq[n], freq[o], res)
-
-        return (res // 2) % (10**9 + 7)
+                res += freq[2**k - x]
+            freq[x] += 1
+        return res % (10**9 + 7)

@@ -1,13 +1,15 @@
 class Solution:
     def maxOperations(self, nums: List[int], k: int) -> int:
-        freq = Counter(nums)
-        ops = 0
-        for n in list(freq.keys()):
-            if n * 2 == k:
-                ops += freq[n] // 2
-                freq.pop(n)
-            if k - n in freq:
-                ops += min(freq[n], freq[k - n])
-                freq.pop(n)
-                freq.pop(k - n)
-        return ops
+        nums.sort()
+        l, r = 0, len(nums) - 1
+        res = 0
+        while l < r:
+            lr = nums[l] + nums[r]
+            if lr < k:
+                l += 1
+            elif lr > k:
+                r -= 1
+            else:
+                res += 1
+                l, r = l + 1, r - 1
+        return res

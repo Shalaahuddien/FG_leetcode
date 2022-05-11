@@ -1,9 +1,12 @@
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        def combs(k, n, cap):
-            if not k:
-                return [[]] * (not n)
-            return [comb + [last]
-                    for last in range(1, cap)
-                    for comb in combs(k-1, n-last, last)]
-        return combs(k, n, 10)
+        def bt(k, n, lower, path, res):
+            if k == 0 and n == 0:
+                res.append(path[:])
+                return
+            for v in range(lower + 1, 10):
+                bt(k - 1, n - v, v, path + [v], res)
+
+        res = []
+        bt(k, n, 0, [], res)
+        return res

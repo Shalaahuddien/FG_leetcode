@@ -7,13 +7,13 @@
 class Solution:
     def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
         bfs = deque([root])
+        ans = 0
         while bfs:
-            tmp = 0
+            ans = 0
             for _ in range(len(bfs)):
                 n = bfs.popleft()
-                tmp += n.val
+                ans += n.val
                 for k in [n.left, n.right]:
                     if k:
                         bfs.append(k)
-            if not bfs:
-                return tmp
+        return ans

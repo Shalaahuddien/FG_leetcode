@@ -1,13 +1,16 @@
 class Solution:
     def numSquares(self, n: int) -> int:
-        evens = [i**2 for i in range(100, 0, -1)]
+        evens = [i**2 for i in range(1, int(n**0.5) + 1)]
 
-        @cache
-        def dp(i):
-            if i == 0:
-                return 0
-            if i < 0:
-                return float("inf")
-            return min([dp(i - e) + 1 for e in evens if i >= e])
-
-        return dp(n)
+        d, q = 1, deque([n])
+        while q:
+            for _ in range(len(q)):
+                x = q.popleft()
+                for e in evens:
+                    if x == e:
+                        return d
+                    if x < e:
+                        break
+                    q.append(x - e)
+            d += 1
+        return d

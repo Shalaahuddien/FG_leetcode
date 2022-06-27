@@ -1,10 +1,9 @@
 class Solution:
-    def maxScore(self, cardPoints: List[int], k: int) -> int:
-        ans = win = 0
-        L = len(cardPoints)
-        for i in range(L - k, L + k):
-            win += cardPoints[i % L]
-            if i >= L:
-                win -= cardPoints[i - k]
-            ans = max(win, ans)
-        return ans
+    def maxScore(self, A, k):
+        n, S = len(A), sum(A)
+        ans = wind = sum(A[:n-k])
+        for i in range(n-k, n):
+            wind = wind - A[i-n+k] + A[i]
+            ans = min(ans, wind)
+        
+        return S - ans

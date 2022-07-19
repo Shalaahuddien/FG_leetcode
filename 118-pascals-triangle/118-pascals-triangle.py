@@ -1,10 +1,12 @@
 class Solution:
     def generate(self, numRows: int) -> List[List[int]]:
-        res = [[1]]
-        for r in range(1, numRows):
-            next = []
-            pre = [0] + res[-1] + [0]
-            for i in range(len(pre)-1):
-                next.append(pre[i]+pre[i+1])
-            res.append(next)
-        return res
+        def f(n):
+            if n:
+                f(n - 1)
+                ans.append([1] * n)
+                for i in range(1, n - 1):
+                    ans[n - 1][i] = ans[n - 2][i] + ans[n - 2][i - 1]
+
+        ans = []
+        f(numRows)
+        return ans

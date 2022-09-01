@@ -6,12 +6,10 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        def post_dfs(T: TreeNode, mx):
-            if not T:
+        def count(node: TreeNode, v: int) -> int:
+            if node is None:
                 return 0
-            res = 1 if T.val >= mx else 0
-            mx = max(mx, T.val)
-            l, r = post_dfs(T.left, mx), post_dfs(T.right, mx)
-            return res + l + r
-
-        return post_dfs(root, -10000)
+            mx = max(node.val, v)
+            return (node.val >= v) + count(node.left, mx) + count(node.right, mx)
+        
+        return count(root, root.val)

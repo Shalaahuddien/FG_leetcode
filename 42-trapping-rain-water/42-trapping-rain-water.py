@@ -1,13 +1,18 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        stk, res = [], 0
-        for i, h in enumerate(height):
-            while stk and height[stk[-1]] < h:
-                low_i = stk.pop()
-                if not stk:
-                    break
-                W = i - stk[-1] - 1
-                H = min(height[stk[-1]], h) - height[low_i]
-                res += W * H
-            stk.append(i)
-        return res
+        i, j, ans, mx, mi = 0, len(height) - 1, 0, 0, 0
+        # two pointers 
+        # pointer i from the left
+        # pointer j from the right
+        while i <= j:
+            # take the min height
+            mi = min(height[i], height[j])
+            # find the max min height
+            mx = max(mx, mi)
+            # the units of water being tapped is the diffence between max height and min height
+            ans += mx - mi
+            # move the pointer i if height[i] is smaller
+            if height[i] < height[j]: i += 1
+            # else move pointer j
+            else: j -= 1
+        return ans

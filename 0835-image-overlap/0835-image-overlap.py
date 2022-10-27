@@ -1,19 +1,21 @@
-import numpy as np
-class Solution(object):
-    def largestOverlap(self, A, B):
-        """
-        :type A: List[List[int]]
-        :type B: List[List[int]]
-        :rtype: int
-        """
+class Solution:
+    def largestOverlap(self, A: List[List[int]], B: List[List[int]]) -> int:
+
+        import numpy as np
         A = np.array(A)
         B = np.array(B)
-        H, W = A.shape
-        pad = A.shape[0] - 1
-        A_pad = np.pad(A, pad, mode='constant')
-        Hout = Wout = 2*pad + 1
-        conv = np.zeros(shape=(Hout, Wout))
-        for h in range(Hout):
-            for w in range(Wout):
-                conv[h, w] = np.sum(B * A_pad[h:h+H, w:w+W])
-        return int(np.max(conv))
+
+        dim = len(A)
+        # extend the matrix to a wider range for the later kernel extraction.
+        B_padded = np.pad(B, dim-1, mode='constant', constant_values=(0, 0))
+
+        max_overlaps = 0
+        for x_shift in range(dim*2 - 1):
+            for y_shift in range(dim* 2 - 1):
+                # extract a kernel from the padded matrix
+                kernel = B_padded[x_shift:x_shift+dim, y_shift:y_shift+dim]
+                # convolution between A and kernel
+                non_zeros = np.sum(A * kernel)
+                max_overlaps = max(max_overlaps, non_zeros)
+
+        return max_overlaps

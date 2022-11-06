@@ -1,49 +1,17 @@
-class Trie:
-    def __init__(self):
-        self.is_word = False
-        self.word = None
-        self.children = defaultdict(Trie)
-    
-    def add(self, word):
-        root = self
-        for char in word:
-            root = root.children[char]
-        root.is_word = True
-        root.word = word
-
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
-        rows, cols = len(board), len(board[0])
-        trie = Trie()
-        for word in words:
-            trie.add(word)
-        res = []
-        
-        def dfs(row, col, node):
-            if board[row][col] == '':
+        board = {i+j*1j: c for i, row in enumerate(board) for j, c in enumerate(row)}
+        res, trie = [], (Trie:=lambda: defaultdict(Trie))()
+        any(reduce(dict.__getitem__, word, trie).__setitem__(None, word) for word in words)
+        def dfs(z, parent):
+            if not (c:=board.get(z)) in parent:
                 return
-            char = board[row][col]
-            board[row][col] = ''
-            
-            child = node.children[char]
-            if child.is_word:
-                res.append(child.word)
-                child.is_word = False
-            
-            if child.children:
-                for drow, dcol in [[0,1],[1,0],[0,-1],[-1,0]]:
-                    r, c = row+drow, col+dcol
-                    if 0 <= r < rows and 0 <= c < cols and board[r][c] in child.children:
-                        dfs(r, c, child)
-			
-			# the above dfs could have deleted some nodes, so recheck and prune if there is nothing left on this child
-            if not child.children:
-                del node.children[char]
-            
-            board[row][col] = char
-            
-        for row in range(rows):
-            for col in range(cols):
-                if board[row][col] in trie.children:
-                    dfs(row, col, trie)
+            if (word:=(node:=parent[c]).pop(None, None)):
+                res.append(word)
+            board[z] = None
+            any(dfs(z+1j**k, node) for k in range(4))
+            board[z] = c
+            if not node:
+                parent.pop(c)
+        any(dfs(z, trie) for z in board)
         return res

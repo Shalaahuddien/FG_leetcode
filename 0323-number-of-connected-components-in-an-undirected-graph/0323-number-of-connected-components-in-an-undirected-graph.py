@@ -1,22 +1,16 @@
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        def dfs(n, g, visited):
-            if visited[n]:
-                return
-            visited[n] = 1
-            for x in g[n]:
-                dfs(x, g, visited)
+        uf = {i: i for i in range(n)}
 
-        visited = [0] * n
-        g = {x: set() for x in range(n)}
+        def find(x):
+            if x != uf[x]:
+                uf[x] = find(uf[x])
+            return uf[x]
+
         for x, y in edges:
-            g[x].add(y)
-            g[y].add(x)
+            fx, fy = find(x), find(y)
+            if fx == fy:
+                continue
+            uf[fy] = fx
 
-        ret = 0
-        for i in range(n):
-            if not visited[i]:
-                dfs(i, g, visited)
-                ret += 1
-
-        return ret
+        return sum(i == f for i, f in uf.items())
